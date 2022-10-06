@@ -18,3 +18,13 @@
     backdrop-filter: saturate(180%) blur(10px);
     box-shadow: rgba(2, 1, 1, 0.1) 0px 5px 20px -5px;
 }
+
+.containerContent{
+    display: flex;
+    position: relative;
+    top: 6.2rem;
+    left: 8.4rem;
+    text-align: right;
+    justify-content: flex-end;
+    width: 40rem;
+}
