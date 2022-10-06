@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import Spline from "@splinetool/react-spline";
+import { Text, Container } from "@nextui-org/react";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Spline
+        className="imagePrincipal"
+        scene="https://prod.spline.design/Vk8MhpNxBYU3anGL/scene.splinecode"
+      />
+      <Container className="containerPrincipal">
+        <Text>Presentacion</Text>
+      </Container>
     </div>
   );
 }
