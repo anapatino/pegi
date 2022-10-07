@@ -1,5 +1,3 @@
-import { themeDark } from "../styled-components/theme.jsx";
-import { Navbar, Text } from "@nextui-org/react";
 import "./navegation.css"
 
 export function Navegation() {
@@ -10,7 +8,7 @@ export function Navegation() {
     </div>
     <ul className="nListItems">
       <li className="nItem">
-        <a className="nLinks">
+        <a className="nLinks" href="#">
           Principal
         </a>
       </li>
