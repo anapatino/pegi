@@ -1,30 +1,30 @@
-import "./navegation.css"
+import { Navbar,Title,ListItems,Links } from "../styled-components/Navbar";
 
 export function Navegation() {
   return (
-    <nav className="navegation" id="navegation">
+    <Navbar>
     <div className="nLogo">
-    <h3 className="title">Pegi</h3>
+      <Title >Pegi</Title>
     </div>
-    <ul className="nListItems">
-      <li className="nItem">
-        <a className="nLinks" href="#">
+    <ListItems>
+      <li >
+        <Links href="#">
           Principal
-        </a>
+        </Links>
       </li>
       <li>|</li>
-      <li className="nItem">
-        <a href="#" className="nLinks">
+      <li >
+        <Links href="#" >
           Ingresar
-        </a>
+        </Links>
       </li>
       <li>|</li>
-      <li className="nItem">
-        <a href="#" className="nLinks">
+      <li >
+        <Links href="#" >
           Contacto
-        </a>
+        </Links>
       </li>
-    </ul>
-  </nav>
+    </ListItems>
+  </Navbar>
   );
 }

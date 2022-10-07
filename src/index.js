@@ -1,8 +1,7 @@
-import { themeDark } from "./styled-components/theme.jsx";
+import { themeDark } from "./styled-components/Theme";
 import { NextUIProvider } from "@nextui-org/react";
 import React from "react";
 import ReactDOM from "react-dom/";
-import "./index.css";
 import App from "./App";
 
 ReactDOM.render(
