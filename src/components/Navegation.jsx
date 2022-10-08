@@ -8,19 +8,19 @@ export function Navegation() {
     </div>
     <ListItems>
       <li >
-        <Links href="#">
+        <Links href="/">
           Principal
         </Links>
       </li>
       <li>|</li>
       <li >
-        <Links href="#" >
+        <Links href="/registrar" >
           Ingresar
         </Links>
       </li>
       <li>|</li>
       <li >
-        <Links href="#" >
+        <Links href="/contacto" >
           Contacto
         </Links>
       </li>
