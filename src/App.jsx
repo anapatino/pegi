@@ -1,9 +1,9 @@
 import Spline from "@splinetool/react-spline";
 import {Button, Text } from "@nextui-org/react";
-import { Navegation } from "./components/Navegation.jsx";
-import { ContainerApp ,ContainerPricipal, ContainerContent} from "./styled-components/Containers.js";
+import { Navegation } from "./components/Navegation";
+import { ContainerApp ,ContainerPricipal, ContainerContent} from "./styled-components/Containers";
 import { Routes, Route } from "react-router-dom";
-import {Login} from "./pages/login/Login.jsx";
+import {Login} from "./pages/login/Login";
 
 function App() {
   return (
