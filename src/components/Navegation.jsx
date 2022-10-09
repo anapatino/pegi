@@ -1,5 +1,5 @@
 import { Navbar,Title,ListItems,Links } from "../styled-components/Navbar";
-
+import {Link}  from "react-router-dom";
 export function Navegation() {
   return (
     <Navbar>
@@ -8,21 +8,21 @@ export function Navegation() {
     </div>
     <ListItems>
       <li >
-        <Links href="/">
+        <Link to="/">
           Principal
-        </Links>
+        </Link>
       </li>
       <li>|</li>
       <li >
-        <Links href="/ingresar" >
+        <Link to="/ingresar">
           Ingresar
-        </Links>
+        </Link>
       </li>
       <li>|</li>
       <li >
-        <Links href="/contacto" >
+        <Link to="/contacto">
           Contacto
-        </Links>
+        </Link>
       </li>
     </ListItems>
   </Navbar>
