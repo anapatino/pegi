@@ -4,6 +4,7 @@ export const ContainerApp = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
@@ -18,6 +19,15 @@ export const ContainerPricipal = styled.div`
   border-radius: 40px;
   backdrop-filter: saturate(180%) blur(10px);
   box-shadow: rgba(2, 1, 1, 0.1) 0px 5px 20px -5px;
+`;
+
+export const ContainerMedium = styled(ContainerPricipal)`
+  top: 47%;
+  width: 25rem;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const ContainerContent = styled.div`

@@ -14,7 +14,7 @@ export function Navegation() {
       </li>
       <li>|</li>
       <li >
-        <Links href="/registrar" >
+        <Links href="/ingresar" >
           Ingresar
         </Links>
       </li>
