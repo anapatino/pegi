@@ -20,11 +20,11 @@ import { Text, Input,Button } from "@nextui-org/react";
         INGRESAR
       </Text>
       <ContainerMedium>
-      <Input clearable bordered labelPlaceholder="Usuario"  color="secondary" css={{
+      <Input clearable bordered labelPlaceholder="Usuario"  css={{
         width:'15rem',
         marginTop:'$20'
       }}/>
-      <Input.Password   bordered labelPlaceholder="Contraseña"  color="secondary" css={{
+      <Input.Password   bordered labelPlaceholder="Contraseña"  css={{
         width:'15rem',
         marginTop:'$15'
       }}/>
