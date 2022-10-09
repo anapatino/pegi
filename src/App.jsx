@@ -3,7 +3,7 @@ import {Button, Text } from "@nextui-org/react";
 import { Navegation } from "./components/Navegation";
 import { ContainerApp ,ContainerPricipal, ContainerContent} from "./styled-components/Containers";
 import { Routes, Route } from "react-router-dom";
-import {Login} from "./pages/login/Login";
+import {Login} from "./pages/login/login";
 
 function App() {
   return (
