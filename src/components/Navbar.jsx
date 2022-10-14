@@ -1,6 +1,6 @@
 import { Navbar,Title,ListItems} from "../styled-components/Navbar";
 import {Link}  from "react-router-dom";
-export function Navegation() {
+export function Navigation() {
   return (
     <Navbar>
     <div className="nLogo">
@@ -8,19 +8,19 @@ export function Navegation() {
     </div>
     <ListItems>
       <li >
-        <Link to="/">
+        <Link  to="/" style={{ color: '#FFF' }}>
           Principal
         </Link>
       </li>
       <li>|</li>
       <li >
-        <Link to="/ingresar">
+        <Link to="/ingresar" style={{ color: '#FFF' }}>
           Ingresar
         </Link>
       </li>
       <li>|</li>
       <li >
-        <Link to="/contacto">
+        <Link to="/contacto" style={{ color: '#FFF' }}>
           Contacto
         </Link>
       </li>

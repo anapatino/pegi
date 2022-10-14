@@ -29,8 +29,8 @@ import { Text, Input,Button } from "@nextui-org/react";
         marginTop:'$15'
       }}/>
        <Button shadow color="secondary" auto css={{ width:'10rem', marginTop:'3rem'}}>
-            Ingresar
-          </Button>
+          Ingresar
+        </Button>
       </ContainerMedium>
     </ContainerApp>
   );

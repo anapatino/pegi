@@ -16,10 +16,6 @@ export const ListItems = styled.ul`
   grid-auto-columns: max-content;
   gap: 2em;
 `;
-export const Links = styled.a`
-  color: #ffffff;
-  transition: 0.2s ease-in;
-`;
 
 export const Title = styled.h3`
   margin-left: 40px;
