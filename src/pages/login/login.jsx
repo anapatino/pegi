@@ -1,8 +1,23 @@
 import { ContainerApp, ContainerMedium} from "../../styled-components/Containers";
+import {FormMedium} from "../../styled-components/Forms";
 import Spline from "@splinetool/react-spline";
 import { Text, Input,Button } from "@nextui-org/react";
+import {useForm} from "react-hook-form";
+import apiClient from "../../data/http-common";
+import { useMutation } from "react-query";
+
  
  export  const Login = () => {
+  const {register, handleSubmit, formState: { errors }} = useForm();
+
+  const onSubmit =(data) => {
+    query.mutate({ name:data.user, password:data.password});
+  }
+
+  const query = useMutation(auth =>{
+    return apiClient.post("login",auth ).then((res) => res.data);
+  });
+
   return(
     <ContainerApp>
       <Spline 
@@ -20,17 +35,35 @@ import { Text, Input,Button } from "@nextui-org/react";
         INGRESAR
       </Text>
       <ContainerMedium>
-      <Input clearable bordered labelPlaceholder="Usuario"  css={{
-        width:'15rem',
-        marginTop:'$20'
-      }}/>
-      <Input.Password   bordered labelPlaceholder="Contraseña"  css={{
-        width:'15rem',
-        marginTop:'$15'
-      }}/>
-       <Button shadow color="secondary" auto css={{ width:'10rem', marginTop:'3rem'}}>
+      <FormMedium onSubmit={handleSubmit(onSubmit)}>
+        <Input {...register("user",{ required: "ingresar usuario" })} clearable bordered labelPlaceholder="Usuario"  css={{
+          width:'15rem',
+          marginTop:'$10',
+          marginButton:'10rem'
+          
+        }}/>
+        <Text css={{fontSize:'0.9rem'}}>{errors.user?.message}</Text>
+       <Input.Password {...register("password",{ required: "ingresar contraseña" })}   bordered labelPlaceholder="Contraseña"  css={{
+         width:'15rem',
+         marginTop:'$16',
+         marginButton:'10rem'
+        }}/>
+         <Text css={{fontSize:'0.9rem'}} >{errors.password?.message}</Text>
+       <Button type="submit" value="submit" shadow color="secondary" auto css={{
+         width:'10rem',
+         margin:'2rem auto'}}>
           Ingresar
-        </Button>
+        </Button>    
+      </FormMedium>
+      <div>
+      {query.isLoading
+      ? "Loading..."
+      : query.isError
+      ? "Error: " + query.error.response.data.message
+      : query.data
+      ? "Mesange: " + query.data
+      : null}
+    </div>
       </ContainerMedium>
     </ContainerApp>
   );

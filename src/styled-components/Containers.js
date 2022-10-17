@@ -25,9 +25,11 @@ export const ContainerMedium = styled(ContainerPricipal)`
   top: 47%;
   width: 25rem;
   height: 25rem;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 export const ContainerContent = styled.div`

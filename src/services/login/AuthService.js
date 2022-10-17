@@ -1,11 +1,8 @@
 import apiClient from "../../data/http-common";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
 
-const AuthService = () => {
-  const LoginRequest = {
-    name: "jeison",
-    password: "jeisddon",
-  };
+const AuthService = (LoginRequest) => {
+  console.log(LoginRequest.name + LoginRequest.password);
   const getUser = () => {
     return apiClient
       .post("login", {
@@ -15,7 +12,8 @@ const AuthService = () => {
       .then((res) => res.data);
   };
 
-  const query = useQuery("auth", getUser);
+  const query = useMutation("auth", getUser);
+
   return (
     <div>
       {query.isLoading
