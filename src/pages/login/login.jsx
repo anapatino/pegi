@@ -57,11 +57,11 @@ import { useMutation } from "react-query";
       </FormMedium>
       <div>
       {query.isLoading
-      ? "Loading..."
+      ? "Cargando..."
       : query.isError
       ? "Error: " + query.error.response.data.message
-      : query.data
-      ? "Mesange: " + query.data
+      : query.data.hasErrors === false
+      ? "Mesange: " + query.data.message +"/"+query.data.data.role
       : null}
     </div>
       </ContainerMedium>
