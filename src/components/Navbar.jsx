@@ -14,13 +14,13 @@ export function Navigation() {
       </li>
       <li>|</li>
       <li >
-        <Link to="/ingresar" style={{ color: '#FFF' }}>
+        <Link to="ingresar" style={{ color: '#FFF' }}>
           Ingresar
         </Link>
       </li>
       <li>|</li>
       <li >
-        <Link to="/contacto" style={{ color: '#FFF' }}>
+        <Link to="contacto" style={{ color: '#FFF' }}>
           Contacto
         </Link>
       </li>

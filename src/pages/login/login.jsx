@@ -5,6 +5,7 @@ import { Text, Input,Button } from "@nextui-org/react";
 import {useForm} from "react-hook-form";
 import apiClient from "../../data/http-common";
 import { useMutation } from "react-query";
+import { Navigate } from "react-router-dom";
 
  
  export  const Login = () => {
@@ -60,8 +61,8 @@ import { useMutation } from "react-query";
       ? "Cargando..."
       : query.isError
       ? "Error: " + query.error.response.data.message
-      : query.data.hasErrors === false
-      ? "Mesange: " + query.data.message +"/"+query.data.data.role
+      : query.data
+      ? ( <Navigate to="/principal" replace={true} />)
       : null}
     </div>
       </ContainerMedium>
