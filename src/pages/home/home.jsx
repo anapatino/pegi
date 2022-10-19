@@ -1,9 +1,14 @@
 import Spline from "@splinetool/react-spline";
 import {Button, Text } from "@nextui-org/react";
 import { Navigation } from "../../components/Navbar";
+import { Link } from "react-router-dom";
 import { ContainerApp ,ContainerPricipal, ContainerContent} from "../../styled-components/Containers";
+import { useEffect } from "react";
 
 export function Home () {
+  useEffect( () =>{
+    
+  });
     return(
       <ContainerApp >
          <Spline 
@@ -18,8 +23,8 @@ export function Home () {
                Asombroso cómo este sistema de desarrollo te permite gestionar tu
                academia online desde la comodidad de tu hogar.
             </Text>
-            <Button css={{ background: "$gradient", width:'5rem', marginTop:'1rem'}}>
-              Ingresar
+            <Button css={{ background: "$gradient", width:'5rem', marginTop:'1rem'}} >         
+            <Link  to="ingresar" style={{ color: '#FFF' }}>Ingresar</Link>
             </Button>
           </ContainerContent>
         </ContainerPricipal>
