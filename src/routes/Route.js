@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login } from "../pages/login/login";
 import { Home } from "../pages/home/home";
-import { Dashboard, Dashbo, Register } from "../pages/dashboard/dashboard";
+import { Dashboard, Dashbo } from "../pages/dashboard/dashboard";
 import ErrorPage from "../components/ErrorPage";
 import App from "../App";
+import { RegisterCv } from "../pages/dashboard/cv/registerCv";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "register-cv",
-        element: <Register />,
+        element: <RegisterCv />,
       },
     ],
   },

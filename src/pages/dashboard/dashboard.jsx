@@ -1,7 +1,7 @@
-import { Container,Spacer ,Button,User, Row, Text , Grid, Popover} from "@nextui-org/react";
+import { Container,Spacer ,Button,User, Row, Text , Grid, Dropdown} from "@nextui-org/react";
 import { ContainerDash } from "../../styled-components/Containers";
 import { ReactComponent as Vector} from "../../assets/icons/Vector.svg";
-import { Outlet } from "react-router-dom";
+import { Outlet,Link } from "react-router-dom";
 import { useState } from "react";
 
 export function Dashboard (){
@@ -18,48 +18,42 @@ export function Dashboard (){
         <Vector/>
         <Spacer y={2} />
         <Button light  rounded auto >
-        <i className ="bi bi-bar-chart" ></i>
+        <Link  to="" style={{ color: '#FFF' }} className ="bi bi-bar-chart"/>
         </Button>
         <Spacer y={1} />
         <Button light  rounded auto >
-        <i className="bi bi-person-fill"></i>
+        <Link  to="register-cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
         </Button>
         </Container>
-        <Container >
+        <Container css={{minHeight:'100vh'}} >
              <Container css={{height:'10%', marginTop:'1.2rem',marginBottom:'1.2rem'}}>
               <Row  align="center">
                <h2>Dashboard</h2>
                <Spacer x={35} />
-               <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
-               <Popover.Trigger>
+               <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
+               <Dropdown.Trigger>
                <User
+                 bordered
+                 color="secondary"
                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                  name="Ana Patiño"
                  description="asofiapatino@unicesar.edu.co"
                  css={{ px: 9 }}
                 />
-               </Popover.Trigger>
-               <Popover.Content>
-               <Spacer y={0.4} />
-               <Row justify="center" align="center">
-                <Text>¿Desea cerrar sesion?</Text>
-               </Row>
-               <Spacer y={1} />
-               <Grid.Container justify="space-between" alignContent="center">
-                  <Grid>
-                   <Button size="sm" rounded light>
-                     Cancelar
-                   </Button>
-                 </Grid>
-                 <Grid>
-                   <Button size="sm" shadow rounded color="error">
-                      Salir
-                  </Button>
-                 </Grid>
-                </Grid.Container>
-                <Spacer y={0.5} />
-               </Popover.Content>
-               </Popover>
+               </Dropdown.Trigger>
+               <Dropdown.Menu>
+                <Dropdown.Item key="settings" withDivider>
+                  Configuraciones
+                </Dropdown.Item>
+                <Dropdown.Item key="system">Sistema</Dropdown.Item>
+                <Dropdown.Item key="help_and_feedback" withDivider>
+                  Ayuda y Recomendaciones
+               </Dropdown.Item>
+               <Dropdown.Item key="logout" color="error" withDivider>
+                  Salir
+                </Dropdown.Item>
+               </Dropdown.Menu>
+               </Dropdown>
               </Row>
             </Container>
             <Container css={{height:'80%',width:'100%',overflow:'hidden'}}>
@@ -72,9 +66,4 @@ export function Dashboard (){
 
 export const Dashbo =() => {
   return ( <h3>Bienvenido al dashboard</h3> );
-}
-
-
-export const Register =() => {
-  return ( <h3>Bienvenido al Registro</h3> );
 }

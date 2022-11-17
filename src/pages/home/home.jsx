@@ -24,7 +24,7 @@ export function Home () {
                academia online desde la comodidad de tu hogar.
             </Text>
             <Button css={{ background: "$gradient", width:'5rem', marginTop:'1rem'}} >         
-            <Link  to="ingresar" style={{ color: '#FFF' }}>Ingresar</Link>
+            <Link  to="login" style={{ color: '#FFF' }}>Ingresar</Link>
             </Button>
           </ContainerContent>
         </ContainerPricipal>
