@@ -1,7 +1,7 @@
 import { ContainerApp, ContainerMedium} from "../../styled-components/Containers";
 import {FormMedium} from "../../styled-components/Forms";
 import Spline from "@splinetool/react-spline";
-import { Text, Input,Button } from "@nextui-org/react";
+import { Text, Input,Button,Loading  } from "@nextui-org/react";
 import {useForm} from "react-hook-form";
 import apiClient from "../../data/http-common";
 import { useMutation } from "react-query";
@@ -53,12 +53,12 @@ import { Navigate } from "react-router-dom";
        <Button type="submit" value="submit" shadow color="secondary" auto css={{
          width:'10rem',
          margin:'2rem auto'}}>
-          Ingresar
+         Ingresar
         </Button>    
       </FormMedium>
       <div>
-      {query.isLoading
-      ? "Cargando..."
+      { query.isLoading
+        ? <Loading color="secondary" type="points"/>
       : query.isError
       ? "Error: " + query.error.response.data.message
       : query.data

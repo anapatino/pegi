@@ -14,7 +14,7 @@ export function Navigation() {
       </li>
       <li>|</li>
       <li >
-        <Link to="ingresar" style={{ color: '#FFF' }}>
+        <Link to="login" style={{ color: '#FFF' }}>
           Ingresar
         </Link>
       </li>

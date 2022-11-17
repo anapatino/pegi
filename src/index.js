@@ -2,6 +2,7 @@ import { themeDark } from "./styled-components/Theme";
 import { NextUIProvider } from "@nextui-org/react";
 import { RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { router } from "./routes/Route";
 import React from "react";
 import ReactDOM from "react-dom/";
