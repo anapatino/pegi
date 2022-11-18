@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export function Dashboard (){
   const [isOpen, setIsOpen] = useState(false);
+  /*const [title, setTitle] = useState("");*/
   
     return (
       <ContainerDash>
