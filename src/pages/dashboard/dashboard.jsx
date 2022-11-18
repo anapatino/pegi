@@ -4,8 +4,10 @@ import { ReactComponent as Vector} from "../../assets/icons/Vector.svg";
 import { Outlet,Link } from "react-router-dom";
 import { useState } from "react";
 
+
 export function Dashboard (){
   const [isOpen, setIsOpen] = useState(false);
+  
     return (
       <ContainerDash>
         <Container css={{
