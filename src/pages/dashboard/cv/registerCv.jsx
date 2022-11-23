@@ -1,47 +1,55 @@
-import { Container,Button,Row, Text,Col, Spacer,Input,Checkbox,Modal} from "@nextui-org/react";
+import { Container,Button,Row, Text,Col, Spacer,Input,Radio,Modal} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
-import { useMutation } from "react-query";
-import { useState } from "react";
+import { useMutation,useQuery } from "react-query";
+import { useEffect, useState } from "react";
 
-/*
-    const getPerson = (document, url) => {
-    return apiClient.get(url, { params: { document: document } })
-          .then((res) => res.data);         
-      };
-*/
 
 export function RegisterCv() {
-    const [civilState, setCivilState] = useState("");
-    const [gender, setGender] = useState("");
-    const [type, setType] = useState("");
-    const { register, handleSubmit} = useForm();
+    const { register, handleSubmit,reset ,setValue, watch} = useForm();
     const [visible, setVisible] = useState(false);
-
+    const user  = JSON.parse(localStorage.getItem('userConfiguration'));
     const handler = () => setVisible(true);
     const closeHandler = () => setVisible(false);;
 
     const onSubmit = (data) => {
-      data.civilState= civilState;
-      data.gender= gender;
-      data.identificationType=type;
       query.mutate(data);
+      const people ={
+        nameUser: user.name,
+        document: data.document,
+      };
+      change.mutate(people);
+      user.personDocument=data.document;
+      localStorage.setItem('userConfiguration',JSON.stringify(user));
       handler();
     };
-  
+
+    const getPerson = () =>{
+        return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
+    }
+
+    const {data, isLoading} = useQuery("search", getPerson,{refetchOnWindowFocus:false,retry:false});
+
+    const change = useMutation(people =>{
+        return apiClient.post("auth/addPerson/",people ).then((res) => res.data);
+    });
+
     const query = useMutation(people =>{
         return apiClient.post("people",people ).then((res) => res.data);
     });
 
-     /*
-     const query = useQuery(["people", variable],() => getTweets(variable, "people/"),
-     {
-      enabled: !!variable,
-      retry: false,
-      refetchOnWindowFocus: false,
-     }  );
-     */
+    useEffect(()=>{
+        if(!isLoading && data != null ){
+            reset(data.data);
+        }
+    },[isLoading,reset])
 
+    useEffect(()=>{
+        if(change.isLoading && query.isLoading){
+            window.location.reload();
+        }
+    },[change.isLoading,query.isLoading])
+   
     return(
         <Container css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}} >
             <Row justify="space-between"gap={1}>
@@ -51,78 +59,79 @@ export function RegisterCv() {
             </Button>
             </Row>
             <Container css={{paddingTop:'10px',height:'27.5rem',overflowY:'auto'}}  >
-               <form onSubmit={handleSubmit(onSubmit)}> 
+               <form onSubmit={handleSubmit(onSubmit)}>
                 <Row justify="flex-start" gap={2} >
                     <Col css={{width:'40%'}}>
                      <h4>Informacion Personal</h4>
                      <Text css={{margin:'0'}}>
                         Provea sus datos personales.
                      </Text>
-                    </Col>                    
+                    </Col>
                     <Col css={{width:'80%'}}>
                         <Spacer y={1}/>
                         <Row justify="flex-start" align="center">
-                        <Checkbox.Group
-                        value={type}
-                        onChange={setType}
+                        <Radio.Group
+                        value={watch('identificationType')}
+                        onChange={e=>setValue('identificationType',e)}
                         label="Seleccionar tipo:"
                         orientation="horizontal"
                         color="secondary"
                         >
-                        <Checkbox value="TI" size="sm">Tarjeta de indentidad</Checkbox>
-                        <Checkbox value="CC" size="sm">Cedula</Checkbox>
-                        </Checkbox.Group>
-                        <Input {...register("document",{ required: true })} labelPlaceholder="Documento" clearable css={{marginLeft:'10px',width:'14rem'}}/>
+                        <Radio value="TI" size="sm">Tarjeta de indentidad</Radio>
+                        <Radio value="CC" size="sm">Cedula</Radio>
+                        </Radio.Group>
+                        <Spacer x={0.5}/>
+                        <Input {...register("document",{ required: true })} label="Documento" clearable css={{marginLeft:'10px',width:'14rem'}}/>
                         </Row>
                         <Spacer y={1.2}/>
-                        <Input {...register("firstName",{ required: true })} labelPlaceholder="Primer Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Input {...register("secondName",{ required: true })} labelPlaceholder="Segundo Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Input {...register("firstLastName",{ required: true })} labelPlaceholder="Primer Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Input {...register("secondLastName",{ required: true })} labelPlaceholder="Segundo Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Checkbox.Group
-                        value={civilState}
-                        onChange={setCivilState}
+                        <Input {...register("firstName",{ required: true })} label="Primer Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Input {...register("secondName",{ required: true })} label="Segundo Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Input {...register("firstLastName",{ required: true })} label="Primer Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Input {...register("secondLastName",{ required: true })} label="Segundo Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Spacer y={1}/>
+                        <Radio.Group
+                        value={watch('civilState')}
+                        onChange={e=>setValue('civilState',e)}
                         label="Estado Civil:"
                         orientation="horizontal"
                         color="secondary"
                         >
-                        <Checkbox value="single" size="sm">Soltero/a</Checkbox>
-                        <Checkbox value="married" size="sm">Casado/a</Checkbox>
-                        <Checkbox value="widowed" size="sm">Viudo/a</Checkbox>
-                        <Checkbox value="union" size="sm">Union Libre</Checkbox>
-                        </Checkbox.Group>
+                        <Radio value="single" size="sm">Soltero/a</Radio>
+                        <Radio value="married" size="sm">Casado/a</Radio>
+                        <Radio value="widowed" size="sm">Viudo/a</Radio>
+                        <Radio value="union" size="sm">Union Libre</Radio>
+                        </Radio.Group>
                         <Spacer y={1}/>
                         <Row  align="center">
-                        <Checkbox.Group
-                        value={gender}
-                        onChange={setGender}
+                        <Radio.Group
+                        value={watch('gender')}
+                        onChange={e=>setValue('gender',e)}
                         label="Sexo:"
                         orientation="horizontal"
                         color="secondary"
                         >
-                        <Checkbox value="femenine" size="sm">Femenino</Checkbox>
-                        <Checkbox value="masculine" size="sm">Masculino</Checkbox>
-                        </Checkbox.Group>
+                        <Radio value="female" size="sm">Femenino</Radio>
+                        <Radio value="male" size="sm">Masculino</Radio>
+                        </Radio.Group>
+                        <Spacer x={0.7}/>
                         <Input {...register("birthDate",{ required: true })} clearable label="Fecha Nacimiento" type="date"   width="15rem" css={{marginLeft:'4rem'}}/>
                         </Row>
                         <Spacer y={1.2}/>
-                        <Input {...register("phone",{ required: true })} clearable labelPlaceholder="Telefono" width="15rem" css={{margin:'1rem'}}/>
-                        <Input {...register("institutionalMail",{ required: true })} clearable labelPlaceholder="Correo" type="email" width="15rem" css={{margin:'1rem'}}/>
-                        <Input {...register("citiesCode",{ required: true })} clearable labelPlaceholder="Ciudad"  width="15rem" css={{margin:'1rem'}}/>
+                        <Input {...register("phone",{ required: true })} clearable label="Telefono" width="15rem" css={{margin:'1rem'}}/>
+                        <Input {...register("institutionalMail",{ required: true })} clearable label="Correo" type="email" width="15rem" css={{margin:'1rem'}}/>
+                        <Input {...register("citiesCode",{ required: true })} clearable label="Ciudad"  width="15rem" css={{margin:'1rem'}}/>
                         <Spacer y={1}/>
-                        <Row justify="flex-end">
-                            <Button light color="secondary" autoFocus="false" size="sm" rounded >Cancelar</Button>
-                            <Spacer x={1.5}/>
+                         { data == null ?
+                        (<Row justify="flex-end">
                             <Button type="submit" color="secondary" autoFocus="false" size="sm" rounded>Guardar</Button>
                             <Spacer x={5}/>
-                        </Row>        
-                        <Spacer y={2}/>              
+                        </Row>) : ""}
+                        <Spacer y={2}/>
                     </Col>
                 </Row>
-               </form>  
+               </form>
             </Container>
-           
-            <Modal  
+            <Modal
                 closeButton
                 aria-labelledby="modal-title"
                 open={visible}
@@ -131,7 +140,7 @@ export function RegisterCv() {
              <Modal.Header>
                 <Spacer y={2}/>
                 <Text id="modal-title" size={18}>
-                    Hoja de vida  
+                    Hoja de vida
                     <Text b size={18}>
                         {query.isSuccess  ? " Registrada con Exito." :
                          query.isError ? " No fue Registrada" :""}
@@ -143,4 +152,5 @@ export function RegisterCv() {
             </Modal>
         </Container>
     );
+   
 }

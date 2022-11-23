@@ -1,14 +1,24 @@
 import { Container,Spacer ,Button,User, Row, Dropdown} from "@nextui-org/react";
 import { ContainerDash } from "../../styled-components/Containers";
 import { ReactComponent as Vector} from "../../assets/icons/Vector.svg";
-import { Outlet,Link } from "react-router-dom";
+import { Outlet,Link,useNavigate  } from "react-router-dom";
+import apiClient from "../../data/http-common";
 import { useState } from "react";
+import { useQuery } from "react-query";
 
 
 export function Dashboard (){
   const [isOpen, setIsOpen] = useState(false);
-  /*const [title, setTitle] = useState("");*/
+  const [title, setTitle] = useState("Dashboard");
+  const user  = JSON.parse(localStorage.getItem('userConfiguration'));
+  const navigate = useNavigate();
   
+  const getPerson = () =>{
+    return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
+  }
+  
+  const query = useQuery("people", getPerson,{refetchOnWindowFocus:false,retry:false});
+
     return (
       <ContainerDash>
         <Container css={{
@@ -20,31 +30,31 @@ export function Dashboard (){
           }}>
         <Vector/>
         <Spacer y={2} />
-        <Button light  rounded auto >
+        <Button light  rounded auto onClick={()=> setTitle("Dashboard")}>
         <Link  to="" style={{ color: '#FFF' }} className ="bi bi-bar-chart"/>
         </Button>
         <Spacer y={1} />
-        <Button light  rounded auto >
+        <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
         <Link  to="register-cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
         </Button>
         </Container>
         <Container css={{minHeight:'100vh'}} >
              <Container css={{height:'10%', marginTop:'1.2rem',marginBottom:'1.2rem'}}>
               <Row  align="center">
-               <h2>Dashboard</h2>
+               <h2>{title}</h2>
                <Spacer x={35} />
                <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
                <Dropdown.Trigger>
                <User
                  bordered
-                 color="secondary"
+                 color={user.role === "estudiante" ? "success" : user.role === "docente" ? "secondary":"gradient" }
                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                 name="Ana Patiño"
-                 description="asofiapatino@unicesar.edu.co"
+                 name={query.data != null ? query.data.data.firstName +" "+ query.data.data.firstLastName :""}
+                 description={query.data != null ? query.data.data.institutionalMail :""}
                  css={{ px: 9 }}
                 />
                </Dropdown.Trigger>
-               <Dropdown.Menu>
+               <Dropdown.Menu onAction={(e)=>{if(e ==="logout"){localStorage.clear();navigate("/login");window.location.reload();}}}>
                 <Dropdown.Item key="settings" withDivider>
                   Configuraciones
                 </Dropdown.Item>
