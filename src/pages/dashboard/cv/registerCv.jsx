@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export function RegisterCv() {
     const { register, handleSubmit,reset ,setValue, watch} = useForm();
     const [visible, setVisible] = useState(false);
+    const [document,setDocument] = useState("");
     const [user,setUser]= useState(JSON.parse(localStorage.getItem('userConfiguration')));
     const handler = () => setVisible(true);
     const closeHandler = () => setVisible(false);;
@@ -42,6 +43,16 @@ export function RegisterCv() {
         return apiClient.post("people",people ).then((res) => res.data);
     });
 
+    const deletePerson = () =>{
+        return apiClient.delete(`people/${document}`).then((res) => res.data);
+    }
+
+    const del = useQuery(["delete",document], deletePerson,{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
+
+    if(del.isSuccess){
+        window.location.reload();
+    }
+
     useEffect(()=>{
         if(!isLoading && data != null ){
             reset(data.data);
@@ -53,7 +64,7 @@ export function RegisterCv() {
         <Container css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}} >
             <Row justify="space-between"gap={1}>
             <h3>Hoja de vida</h3>
-            <Button flat color="secondary" rounded auto autoFocus="false">
+            <Button flat color="secondary" rounded auto autoFocus="false" onClick={()=>setDocument(user.personDocument)}>
                 <i  to="" style={{ color: '#FFF' }} className ="bi bi-dash-square"/>
             </Button>
             </Row>
