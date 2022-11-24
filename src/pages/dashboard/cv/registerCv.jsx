@@ -11,33 +11,25 @@ export function RegisterCv() {
     const [document,setDocument] = useState("");
     const [user,setUser]= useState(JSON.parse(localStorage.getItem('userConfiguration')));
     const handler = () => setVisible(true);
-    const closeHandler = () => setVisible(false);;
+    const closeHandler = () => setVisible(false);
 
     const onSubmit = (data) => {
-       query.mutate(data);
         const people ={
-         nameUser: user.name,
-         document: data.document,
+          ...data,nameUser: user.name,
         };
-        if(query.isSuccess){
-            console.log("guarde persona y voy a modificar");
-            change.mutate(people);
-        }
-       user.personDocument=data.document;
-       setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));
-       handler();
-       window.location.reload();
+        query.mutate(people);
+        user.personDocument=data.document;
+        setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));    
+        handler();        
+        window.location.reload();                   
     };
+
 
     const getPerson = () =>{
         return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
     }
 
     const {data, isLoading} = useQuery(["search",user], getPerson,{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
-
-    const change = useMutation(people =>{
-        return apiClient.post("auth/addPerson/",people ).then((res) => res.data);
-    });
 
     const query = useMutation(people =>{
         return apiClient.post("people",people ).then((res) => res.data);
@@ -53,6 +45,7 @@ export function RegisterCv() {
         window.location.reload();
     }
 
+   
     useEffect(()=>{
         if(!isLoading && data != null ){
             reset(data.data);
@@ -153,9 +146,8 @@ export function RegisterCv() {
                     Hoja de vida
                     <Text b size={18}> Registrada con Exito. </Text>
                 </Text>
-                <Text>{query.message}</Text>
              </Modal.Header>
-             <Spacer y={0.9}/>
+             <Spacer y={0.9}/>  
             </Modal>
         </Container>
     );
