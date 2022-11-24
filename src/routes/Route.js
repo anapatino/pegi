@@ -4,7 +4,9 @@ import { Home } from "../pages/home/home";
 import { Dashboard, Dashbo } from "../pages/dashboard/dashboard";
 import ErrorPage from "../components/ErrorPage";
 import App from "../App";
-import { RegisterCv } from "../pages/dashboard/cv/registerCv";
+import { RegisterCv } from "../pages/dashboard/cv/cv";
+import { Proposal } from "../pages/dashboard/proposal/proposal";
+import { Project } from "../pages/project/project";
 
 export const router = createBrowserRouter([
   {
@@ -31,8 +33,16 @@ export const router = createBrowserRouter([
         element: <Dashbo />,
       },
       {
-        path: "register-cv",
+        path: "cv",
         element: <RegisterCv />,
+      },
+      {
+        path: "proposal",
+        element: <Proposal />,
+      },
+      {
+        path: "project",
+        element: <Project />,
       },
     ],
   },

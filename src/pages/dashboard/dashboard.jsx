@@ -35,14 +35,29 @@ export function Dashboard (){
         </Button>
         <Spacer y={1} />
         <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
-        <Link  to="register-cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
+        <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
         </Button>
+        {user.role === "estudiante" ? 
+         (
+          <div>
+            <Spacer y={1} />
+            <Button light  rounded auto onClick={()=> setTitle("Propuesta")}>
+              <Link  to="proposal" style={{ color: '#FFF' }} className ="bi bi-journal"/>
+            </Button>
+            <Spacer y={1} />
+            <Button light  rounded auto onClick={()=> setTitle("Proyecto")}>
+              <Link  to="project" style={{ color: '#FFF' }} className ="bi bi-journal-bookmark-fill"/>
+            </Button>
+          </div>
+         ) : ""
+         }
         </Container>
         <Container css={{minHeight:'100vh'}} >
              <Container css={{height:'10%', marginTop:'1.2rem',marginBottom:'1.2rem'}}>
-              <Row  align="center">
-               <h2>{title}</h2>
-               <Spacer x={35} />
+              <Row  align="center" justify="flex-start">
+                <Container css={{width:'90rem',margin:'0'}}>
+                  <h2>{title}</h2>
+                </Container> 
                <Dropdown isOpen={isOpen} onOpenChange={setIsOpen}>
                <Dropdown.Trigger>
                <User
@@ -78,5 +93,9 @@ export function Dashboard (){
 }
 
 export const Dashbo =() => {
-  return ( <h3>Bienvenido al dashboard</h3> );
+  return(
+    <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
+        <h3>Bienvenido al dashboard</h3>
+    </Container>
+);
 }
