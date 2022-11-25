@@ -1,4 +1,4 @@
-import { Container,Button,Row, Text,Col, Spacer,Input,Radio,Modal} from "@nextui-org/react";
+import { Container,Button,Row, Text,Col, Spacer,Input,Radio,Modal, Popover,Grid} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
 import { useMutation,useQuery } from "react-query";
@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 export function RegisterCv() {
     const { register, handleSubmit,reset ,setValue, watch} = useForm();
     const [visible, setVisible] = useState(false);
-    const [document,setDocument] = useState("");
+    const [document,setDocument] = useState(""); 
+    const [isOpen, setIsOpen] = useState(false);
     const [user,setUser]= useState(JSON.parse(localStorage.getItem('userConfiguration')));
     const handler = () => setVisible(true);
     const closeHandler = () => setVisible(false);
@@ -57,14 +58,37 @@ export function RegisterCv() {
         <Container css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}} >
             <Row justify="space-between"gap={1}>
             <h3>Hoja de vida</h3>
-            <Button flat color="secondary" rounded auto autoFocus="false" onClick={()=>setDocument(user.personDocument)}>
+            <Popover placement="bottom-right" isOpen={isOpen} onOpenChange={setIsOpen}>
+            <Popover.Trigger>
+            <Button flat color="secondary" rounded auto autoFocus="false" >
                 <i  to="" style={{ color: '#FFF' }} className ="bi bi-dash-square"/>
             </Button>
+            </Popover.Trigger>
+            <Popover.Content>
+            <Grid.Container
+              css={{ borderRadius: "14px", padding: "0.75rem", width: "21rem",alignItems:'center' }}
+            >
+              <Row justify="center" align="center">
+                <Text b>Confirmar</Text>
+              </Row>
+                <Text>
+                  Desea eliminar la informacion suministrada?
+                </Text>
+                <Button size="sm" light onClick={()=>setIsOpen(false)}>
+                  Cancel
+                </Button>
+                <Spacer x={1}/>
+                <Button size="sm" shadow color="error" onClick={()=>setDocument(user.personDocument)}>
+                  Eliminar
+                </Button>
+            </Grid.Container>
+            </Popover.Content>
+            </Popover>
             </Row>
             <Container css={{paddingTop:'10px',height:'27.5rem',overflowY:'auto'}}  >
                <form onSubmit={handleSubmit(onSubmit)}>
-                <Row justify="flex-start" gap={2} >
-                    <Col css={{width:'40%'}}>
+                <Row justify="flex-start" >
+                    <Col css={{width:'50%'}}>
                      <h4>Informacion Personal</h4>
                      <Text css={{margin:'0'}}>
                         Provea sus datos personales.

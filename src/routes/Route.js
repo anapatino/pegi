@@ -6,7 +6,7 @@ import ErrorPage from "../components/ErrorPage";
 import App from "../App";
 import { RegisterCv } from "../pages/dashboard/cv/cv";
 import { Proposal } from "../pages/dashboard/proposal/proposal";
-import { Project } from "../pages/project/project";
+import { Project } from "../pages/dashboard/project/project";
 
 export const router = createBrowserRouter([
   {

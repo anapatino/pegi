@@ -34,9 +34,12 @@ export function Dashboard (){
         <Link  to="" style={{ color: '#FFF' }} className ="bi bi-bar-chart"/>
         </Button>
         <Spacer y={1} />
+        {user.role !== "admin" ?
+        (<div>
         <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
         <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
         </Button>
+        </div>) :""}
         {user.role === "estudiante" ? 
          (
           <div>
@@ -62,7 +65,7 @@ export function Dashboard (){
                <Dropdown.Trigger>
                <User
                  bordered
-                 color={user.role === "estudiante" ? "success" : user.role === "docente" ? "secondary":"gradient" }
+                 color={user.role === "estudiante" ? "primary" : user.role === "docente" ? "secondary":"gradient" }
                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                  name={query.data != null ? query.data.data.firstName +" "+ query.data.data.firstLastName :""}
                  description={query.data != null ? query.data.data.institutionalMail :""}
