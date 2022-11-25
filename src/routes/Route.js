@@ -7,6 +7,8 @@ import App from "../App";
 import { RegisterCv } from "../pages/dashboard/cv/cv";
 import { Proposal } from "../pages/dashboard/proposal/proposal";
 import { Project } from "../pages/dashboard/project/project";
+import { Register, RegisterUser } from "../pages/login/register";
+import { RegisterDocent } from "../pages/login/registerDocent";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +33,20 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: <Dashbo />,
+      },
+      {
+        path: "register/",
+        element: <Register />,
+        children: [
+          {
+            path: "",
+            element: <RegisterUser />,
+          },
+          {
+            path: "docent/",
+            element: <RegisterDocent />,
+          },
+        ],
       },
       {
         path: "cv",

@@ -60,7 +60,7 @@ export function RegisterCv() {
             <h3>Hoja de vida</h3>
             <Popover placement="bottom-right" isOpen={isOpen} onOpenChange={setIsOpen}>
             <Popover.Trigger>
-            <Button flat color="secondary" rounded auto autoFocus="false" >
+            <Button light color="secondary" rounded auto autoFocus="false" >
                 <i  to="" style={{ color: '#FFF' }} className ="bi bi-dash-square"/>
             </Button>
             </Popover.Trigger>

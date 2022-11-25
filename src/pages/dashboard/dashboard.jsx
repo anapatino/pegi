@@ -34,13 +34,13 @@ export function Dashboard (){
         <Link  to="" style={{ color: '#FFF' }} className ="bi bi-bar-chart"/>
         </Button>
         <Spacer y={1} />
-        {user.role !== "admin" ?
+        {user.role !== "administrador" ?
         (<div>
         <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
         <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
         </Button>
-        </div>) :""}
-        {user.role === "estudiante" ? 
+        </div>)
+         : user.role === "estudiante" ? 
          (
           <div>
             <Spacer y={1} />
@@ -51,9 +51,16 @@ export function Dashboard (){
             <Button light  rounded auto onClick={()=> setTitle("Proyecto")}>
               <Link  to="project" style={{ color: '#FFF' }} className ="bi bi-journal-bookmark-fill"/>
             </Button>
-          </div>
-         ) : ""
-         }
+          </div>) 
+          :  user.role === "administrador" ?
+          (
+            <div>
+            <Button light  rounded auto onClick={()=> setTitle("Gestionar Usuarios")}>
+              <Link  to="register" style={{ color: '#FFF' }} className ="bi bi-person-fill-gear"/>
+            </Button>
+            </div>
+          ) : "" }
+
         </Container>
         <Container css={{minHeight:'100vh'}} >
              <Container css={{height:'10%', marginTop:'1.2rem',marginBottom:'1.2rem'}}>
