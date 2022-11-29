@@ -50,7 +50,7 @@ export function RegisterCv() {
         if(!isLoading && data != null ){
             reset(data.data);
         }
-    },[isLoading,reset])
+    },[isLoading,reset,data])
 
    
     return(

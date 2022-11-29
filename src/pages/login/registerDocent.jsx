@@ -31,7 +31,7 @@ export function RegisterDocent (){
       if(data !== undefined){   
         user.mutate(getValues());
       }
-    }),[isSuccess,data]);
+    }),[isSuccess,data,getValues,user]);
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
