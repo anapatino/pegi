@@ -1,13 +1,37 @@
-import { Container,Input,Radio,Button, Spacer, Col,Row } from "@nextui-org/react";
+import { Container,Modal, Text,Input,Radio,Button, Spacer, Col,Row } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { Link  } from "react-router-dom";
+import apiClient from "../../data/http-common";
+import { useMutation,useQuery } from "react-query";
+import { useState ,useEffect} from "react";
 
 export function RegisterDocent (){
-    const { register, handleSubmit,watch,setValue} = useForm();
+    const { register, handleSubmit,watch,getValues,setValue} = useForm();
+    const [visible, setVisible] = useState(false);
+    const [document, setDocument] = useState('');
 
+    const handler = () => setVisible(true);
+
+    const closeHandler = () => setVisible(false);
     
+    const onSubmit = (data) => {
+        setDocument(data.document);
+    }
 
-    const onSubmit = (data) => {}
+    const user = useMutation(user =>{
+        return apiClient.post("Professor",user ).then((res) => {if(res.data != null){handler()}});
+    });
+
+    const getPerson = () =>{
+        return apiClient.get(`people/${document}`).then((res) => res.data);
+    }
+
+    const {data, isSuccess} = useQuery(["search",document], getPerson,{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
+    useEffect((() => {
+      if(data !== undefined){   
+        user.mutate(getValues());
+      }
+    }),[isSuccess,data]);
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
@@ -36,6 +60,20 @@ export function RegisterDocent (){
             <Button type="submit" color="secondary" autoFocus="false" size="sm" rounded css={{margin:'0.5rem'}}>Guardar</Button> 
          </Col>
          </form>
+         <Modal
+                closeButton
+                aria-labelledby="modal-title"
+                open={visible}
+                onClose={closeHandler}
+            >
+             <Modal.Header>
+                <Spacer y={2}/>
+                <Text id="modal-title" size={18}>
+                Registro de docente exitoso
+                </Text>
+             </Modal.Header>
+             <Spacer y={0.9}/>  
+            </Modal>
         </Container>
     );
 }

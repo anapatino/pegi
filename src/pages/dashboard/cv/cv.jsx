@@ -20,8 +20,7 @@ export function RegisterCv() {
         };
         query.mutate(people);
         user.personDocument=data.document;
-        setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));    
-        handler();        
+        setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));           
         window.location.reload();                   
     };
 
@@ -33,7 +32,7 @@ export function RegisterCv() {
     const {data, isLoading} = useQuery(["search",user], getPerson,{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
 
     const query = useMutation(people =>{
-        return apiClient.post("people",people ).then((res) => res.data);
+        return apiClient.post("people",people ).then(handler());
     });
 
     const deletePerson = () =>{
