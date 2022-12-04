@@ -1,12 +1,46 @@
-import { Container,Row,Button,Input,Spacer,Col,Text,Radio,Textarea,Badge,Popover,Grid} from "@nextui-org/react";
+import { Container,Modal,Row,Button,Input,Spacer,Col,Text,Textarea,Badge,Popover,Grid} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import apiClient from "../../../data/http-common";
+import { useNavigate  } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useState,useEffect } from "react";
+import {Select} from "../../../styled-components/Select";
 
 export function Proposal () {
     const [isOpen, setIsOpen] = useState(false);
+    const [enable, setEnable] = useState(false);
+    const  user = JSON.parse(localStorage.getItem('userConfiguration'));
     const { register, handleSubmit,setValue, watch} = useForm();
+    const navigate = useNavigate();
+    const [visible, setVisible] = useState(false);
+    const closeHandler = () => setVisible(false);
 
-    const onSubmit = (data) => {};
+
+    const onSubmit = (data) => {
+      alert(JSON.stringify(data));
+    };
+
+    const getPerson = () =>{
+      return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
+  }
+
+  const query = useQuery(["search",user], getPerson,{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+
+ const getData = (ruta) =>{
+    return apiClient.get(ruta).then((res) => res.data);
+}
+
+const program = useQuery("program",getData("AcademicsProgram/GetAllAcademicPrograms"),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+/* 
+const line = useQuery("line",getData("research-lines/get-research-lines"),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+*/
+  useEffect(()=>{
+    if(query.isError ){
+      alert('No puedes registrar propueta si no llenas tu hoja de vida');
+      navigate("..");
+    }
+    setEnable(true);
+  },[query,navigate,visible])
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
@@ -55,8 +89,8 @@ export function Proposal () {
                     <h4>Informacion General</h4>
                 </Col>
                 <Col css={{width:'70%'}}>
-                    <Input {...register("Date",{ required: true })} clearable label="Fecha" type="date" width="15rem" />
-                    <Input {...register("Title",{ required: true })} clearable label="Titulo"  width="28rem" css={{marginLeft:'1rem'}}/>
+                    <Input {...register("date",{ required: true })} clearable label="Fecha" type="date" width="15rem" />
+                    <Input {...register("title",{ required: true })} clearable label="Titulo"  width="28rem" css={{marginLeft:'1rem'}}/>
                 </Col>
                 </Row>
                 <Spacer y={2}/>
@@ -66,29 +100,19 @@ export function Proposal () {
                     <Spacer y={1}/>
                     <Text css={{margin:'0'}}>Primer Intregrante </Text>
                 </Col>
-                <Col css={{width:'70%'}}>
-                    <Spacer y={2}/>
-                    <Row>
-                    <Radio.Group
-                        value={watch('identificationType')}
-                        onChange={e=>setValue('identificationType',e)}
-                        label="Seleccionar tipo:"
-                        orientation="horizontal"
-                        color="secondary"
-                        >
-                        <Radio value="TI" size="sm">Tarjeta de indentidad</Radio>
-                        <Radio value="CC" size="sm">Cedula</Radio>
-                    </Radio.Group>
-                    <Spacer x={2}/>
-                    <Input {...register("FirstMember",{ required: true })} clearable label="Nombre"  width="25rem" />
-                    </Row>
-                    <Spacer y={1}/>
-                    <Input {...register("FirstDocument",{ required: true })} label="Documento" clearable width="14rem"/>
-                    <Input {...register("FirstAcademicProgram",{ required: true })} label="Programa Academico" clearable width="14rem" css={{marginLeft:'10px'}}/>
-                    <Input {...register("FirstCredit",{ required: true })} clearable label="N° Creditos"  width="15rem" css={{marginLeft:'10px'}}/>
-                    <Input {...register("FirstMail",{ required: true })} label="Correo Institucional" clearable width="14rem" css={{marginTop:'20px'}}/>
-                    <Input {...register("FirstPhone",{ required: true })} clearable label="Telefono"  width="14rem" css={{marginLeft:'10px',marginTop:'20px'}}/>
-                </Col>
+                <Row  justify="flex-start" align="center" css={{width:'68%',marginTop:'2rem'}}> 
+                    <Input {...register("personDocument",{ required: true })} label="Documento" clearable width="30rem" />
+                    <Col css={{marginLeft:'2rem',marginRight:'1rem'}}>
+                    <Text>Programa Academico:</Text>
+                    <Select {...register("academicProgramCode")}>
+                    {
+                      program.data !== undefined
+                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                      ) : "" }
+                   </Select>
+                    </Col>
+                    <Input {...register("amountCredits",{ required: true })} clearable label="N° Creditos"  width="35rem" />
+                </Row>
                 </Row>
                 <Spacer y={2}/>
                 <Row justify="flex-start" >
@@ -96,10 +120,36 @@ export function Proposal () {
                     <h4>Informacion Especifica</h4>
                 </Col>
                 <Col css={{width:'70%'}}>
-                    <Input {...register("LinesReserch",{ required: true })} clearable label="Linea de Investigacion"  width="21rem"/>
-                    <Input {...register("SublineReserch",{ required: true })} clearable label="Sublinea de Investigacion"  width="21rem" css={{marginLeft:'1rem'}}/>
-                    <Input {...register("ThematicArea",{ required: true })} clearable label="Area Tematica"  width="21rem" css={{marginTop:'20px'}}/>
-                    <Input {...register("InvestigationGroup",{ required: true })} clearable label="Grupo de Investigacion"  width="21rem" css={{marginLeft:'1rem',marginTop:'20px'}}/>
+                  <Row  justify="flex-start" align="center" css={{width:'70%'}}>
+                    <Col >
+                        <Text>Linea de Investigacion:</Text>
+                        <Select>
+                        {
+                          program.data !== undefined 
+                          ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                          ) : "" }
+                      </Select>
+                    </Col>
+                    <Col css={{margin:' 0 1rem'}}>
+                    <Text>Sublinea de investigacion:</Text>
+                    <Select>
+                    {
+                      program.data !== undefined 
+                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                      ) : "" }
+                   </Select>
+                    </Col>
+                    <Col css={{marginRight:'1rem'}}>
+                    <Text>Area tematica:</Text>
+                    <Select {...register("thematicAreaCode")}>
+                    {
+                      program.data !== undefined 
+                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                      ) : "" }
+                   </Select>
+                    </Col>
+                    </Row>
+                    <Input {...register("investigationGroup",{ required: true })} clearable label="Grupo de Investigacion"  width="29rem" css={{marginTop:'20px'}}/>
                 </Col>
                 </Row>
                 <Spacer y={2}/>
@@ -109,14 +159,14 @@ export function Proposal () {
                 </Col>
                 <Col css={{width:'70%'}}>
                 <Textarea
-                    {...register("Approach",{ required: true })} 
+                    {...register("approach",{ required: true })} 
                     label="Planteamiento"
                     status="default"
                     rows={8}
                     css={{width:'42rem'}}
                 />
                 <Textarea
-                    {...register("Justification",{ required: true })} 
+                    {...register("justification",{ required: true })} 
                     label="Formulacion"
                     status="default"
                     rows={8}
@@ -131,14 +181,14 @@ export function Proposal () {
                 </Col>
                 <Col css={{width:'70%'}}>
                 <Textarea
-                    {...register("Approach",{ required: true })} 
+                    {...register("generalObjective",{ required: true })} 
                     label="Objetivos general"
                     status="default"
                     rows={4}
                     css={{width:'42rem'}}
                 />
                 <Textarea
-                    {...register("Justification",{ required: true })} 
+                    {...register("specificObjective",{ required: true })} 
                     label="Objetivos especificos"
                     status="default"
                     rows={4}
@@ -153,7 +203,7 @@ export function Proposal () {
                 </Col>
                 <Col css={{width:'70%'}}>
                 <Textarea
-                    {...register("Approach",{ required: true })} 
+                    {...register("bibliographical",{ required: true })} 
                     label="Bibliografias"
                     status="default"
                     rows={8}
@@ -169,6 +219,22 @@ export function Proposal () {
                 </Row>
               </form>
             </Container>
+            <Modal
+                closeButton
+                aria-labelledby="modal-title"
+                open={visible}
+                onClose={closeHandler}
+            >
+             <Modal.Header>
+                <Spacer y={2}/>
+                <Text id="modal-title" size={18}>
+                   Recuerde llenar la hoja de vida para poder ingresar la propuesta.
+                </Text>
+             </Modal.Header>
+             <Spacer y={0.9}/>  
+            </Modal>
         </Container>
     );
 }
+
+

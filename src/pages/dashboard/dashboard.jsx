@@ -34,15 +34,12 @@ export function Dashboard (){
         <Link  to="" style={{ color: '#FFF' }} className ="bi bi-bar-chart"/>
         </Button>
         <Spacer y={1} />
-        {user.role !== "administrador" ?
-        (<div>
-        <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
-        <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
-        </Button>
-        </div>)
-         : user.role === "estudiante" ? 
+        {user.role === "estudiante" ? 
          (
           <div>
+             <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
+               <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
+             </Button>
             <Spacer y={1} />
             <Button light  rounded auto onClick={()=> setTitle("Propuesta")}>
               <Link  to="proposal" style={{ color: '#FFF' }} className ="bi bi-journal"/>

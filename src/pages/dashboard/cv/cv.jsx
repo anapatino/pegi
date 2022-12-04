@@ -1,6 +1,7 @@
 import { Container,Button,Row, Text,Col, Spacer,Input,Radio,Modal, Popover,Grid} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
+import {Select} from "../../../styled-components/Select";
 import { useMutation,useQuery } from "react-query";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react";
 export function RegisterCv() {
     const { register, handleSubmit,reset ,setValue, watch} = useForm();
     const [visible, setVisible] = useState(false);
+    const city = watch('departments');
     const [document,setDocument] = useState(""); 
     const [isOpen, setIsOpen] = useState(false);
     const [user,setUser]= useState(JSON.parse(localStorage.getItem('userConfiguration')));
@@ -15,44 +17,48 @@ export function RegisterCv() {
     const closeHandler = () => setVisible(false);
 
     const onSubmit = (data) => {
+        const {departments, ...newData} = data;
         const people ={
-          ...data,nameUser: user.name,
+          ...newData,nameUser: user.name,
         };
+        alert(JSON.stringify(people));
         query.mutate(people);
         user.personDocument=data.document;
-        setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));           
-        window.location.reload();                   
+        setUser(localStorage.setItem('userConfiguration',JSON.stringify(user)));
+        window.location.reload();
     };
 
-
-    const getPerson = () =>{
-        return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
+    const getParams = (ruta) =>{
+        return apiClient.get(ruta).then((res) => res.data);
     }
 
-    const {data, isLoading} = useQuery(["search",user], getPerson,{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+    const {data, isLoading} = useQuery(["search",user], ()=> getParams(`people/${user.personDocument}`),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
 
     const query = useMutation(people =>{
         return apiClient.post("people",people ).then(handler());
     });
 
-    const deletePerson = () =>{
-        return apiClient.delete(`people/${document}`).then((res) => res.data);
-    }
-
-    const del = useQuery(["delete",document], deletePerson,{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
+    const del = useQuery(["delete",document], ()=> getParams(`people/${document}`),{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
 
     if(del.isSuccess){
         window.location.reload();
     }
 
-   
+    const getData = (ruta) =>{
+        return apiClient.get(ruta).then((res) => res.data);
+    }
+    
+    const departments = useQuery("departaments",() => getData("Locations/departments"),{refetchOnWindowFocus:false,retry:false});
+
+    const cities = useQuery(["cities",city],() => getParams(`Locations/cities?departmentName=${city}`),{enabled: !!city,refetchOnWindowFocus:false,retry:false});
+
     useEffect(()=>{
         if(!isLoading && data != null ){
             reset(data.data);
         }
     },[isLoading,reset,data])
 
-   
+   console.log(city);
     return(
         <Container css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}} >
             <Row justify="space-between"gap={1}>
@@ -107,13 +113,13 @@ export function RegisterCv() {
                         <Radio value="CC" size="sm">Cedula</Radio>
                         </Radio.Group>
                         <Spacer x={0.5}/>
-                        <Input {...register("document",{ required: true })} label="Documento" clearable css={{marginLeft:'10px',width:'14rem'}}/>
+                        <Input {...register("document",{ required: true })} label="Documento"  width="15rem" clearable css={{marginLeft:'2.5rem'}}/>
                         </Row>
                         <Spacer y={1.2}/>
                         <Input {...register("firstName",{ required: true })} label="Primer Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Input {...register("secondName",{ required: true })} label="Segundo Nombre" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Input {...register("secondName",{ required: true })} label="Segundo Nombre" width="15rem" clearable css={{marginLeft:'3rem'}}/>
                         <Input {...register("firstLastName",{ required: true })} label="Primer Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
-                        <Input {...register("secondLastName",{ required: true })} label="Segundo Apellido" width="15rem" clearable css={{margin:'1rem'}}/>
+                        <Input {...register("secondLastName",{ required: true })} label="Segundo Apellido" width="15rem" clearable css={{marginLeft:'3rem'}}/>
                         <Spacer y={1}/>
                         <Radio.Group
                         value={watch('civilState')}
@@ -140,12 +146,31 @@ export function RegisterCv() {
                         <Radio value="male" size="sm">Masculino</Radio>
                         </Radio.Group>
                         <Spacer x={0.7}/>
-                        <Input {...register("birthDate",{ required: true })} clearable label="Fecha Nacimiento" type="date"   width="15rem" css={{marginLeft:'4rem'}}/>
+                        <Input {...register("birthDate",{ required: true })} clearable label="Fecha Nacimiento" type="date"   width="15rem" css={{marginLeft:'6rem'}}/>
                         </Row>
                         <Spacer y={1.2}/>
                         <Input {...register("phone",{ required: true })} clearable label="Telefono" width="15rem" css={{margin:'1rem'}}/>
-                        <Input {...register("institutionalMail",{ required: true })} clearable label="Correo" type="email" width="15rem" css={{margin:'1rem'}}/>
-                        <Input {...register("citiesCode",{ required: true })} clearable label="Ciudad"  width="15rem" css={{margin:'1rem'}}/>
+                        <Input {...register("institutionalMail",{ required: true })} clearable label="Correo" type="email" width="15rem" css={{marginLeft:'3.2rem'}}/>
+                        <Row justify="flex-start">
+                        <Col css={{margin:' 0 1rem'}}>
+                        <Text>Departamento:</Text>
+                        <Select {...register("departments")}>
+                            {
+                            departments.data !== undefined 
+                            ? ( departments.data.data.map((p)=> ( <option value={p.name}>{p.name}</option>))
+                            ) : "" }
+                        </Select>
+                        </Col>
+                        <Col>
+                        <Text>Ciudad:</Text>
+                        <Select {...register("citiesCode")}>
+                            {
+                            cities.data !== undefined 
+                            ? ( cities.data.data.map((p)=> ( <option value={p.id}>{p.name}</option>))
+                            ) : "" }
+                        </Select>
+                        </Col>
+                        </Row>
                         <Spacer y={1}/>
                          { data == null ?
                         (<Row justify="flex-end">
