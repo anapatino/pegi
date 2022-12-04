@@ -11,6 +11,8 @@ export function Proposal () {
     const [enable, setEnable] = useState(false);
     const  user = JSON.parse(localStorage.getItem('userConfiguration'));
     const { register, handleSubmit,setValue, watch} = useForm();
+    const codeLine = watch('codeLine');
+    const codeSubline = watch('codeSubline');
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const closeHandler = () => setVisible(false);
@@ -20,20 +22,24 @@ export function Proposal () {
       alert(JSON.stringify(data));
     };
 
-    const getPerson = () =>{
-      return apiClient.get(`people/${user.personDocument}`).then((res) => res.data);
-  }
+    const getParams = (ruta) =>{
+      return apiClient.get(ruta).then((res) => res.data);
+    }
 
-  const query = useQuery(["search",user], getPerson,{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+    const getData = (ruta) =>{
+      return apiClient.get(ruta).then((res) => res.data);
+    }
 
- const getData = (ruta) =>{
-    return apiClient.get(ruta).then((res) => res.data);
-}
+  const query = useQuery(["search",user],()=> getParams(`people/${user.personDocument}`),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
 
-const program = useQuery("program",getData("AcademicsProgram/GetAllAcademicPrograms"),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
-/* 
-const line = useQuery("line",getData("research-lines/get-research-lines"),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
-*/
+  const program = useQuery("program",() => getData("AcademicsProgram/GetAllAcademicPrograms"),{refetchOnWindowFocus:false,retry:false});
+
+  const line = useQuery("line",() => getData("research-lines/get-research-lines"),{refetchOnWindowFocus:false,retry:false});
+
+  const subline = useQuery(["subline",codeLine],() => getParams(`research-sub-lines/${codeLine}`),{enabled: !!codeLine,refetchOnWindowFocus:false,retry:false});
+
+  const area = useQuery(["area",codeSubline],() => getParams(`Thematic-areas/${codeSubline}`),{enabled: !!codeSubline,refetchOnWindowFocus:false,retry:false});
+
   useEffect(()=>{
     if(query.isError ){
       alert('No puedes registrar propueta si no llenas tu hoja de vida');
@@ -123,19 +129,19 @@ const line = useQuery("line",getData("research-lines/get-research-lines"),{ enab
                   <Row  justify="flex-start" align="center" css={{width:'70%'}}>
                     <Col >
                         <Text>Linea de Investigacion:</Text>
-                        <Select>
+                        <Select {...register("codeLine")}>
                         {
-                          program.data !== undefined 
-                          ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                          line.data !== undefined 
+                          ? ( line.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
                           ) : "" }
                       </Select>
                     </Col>
                     <Col css={{margin:' 0 1rem'}}>
                     <Text>Sublinea de investigacion:</Text>
-                    <Select>
+                    <Select {...register("codeSubline")}>
                     {
-                      program.data !== undefined 
-                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                      subline.data !== undefined 
+                      ? ( subline.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
                       ) : "" }
                    </Select>
                     </Col>
@@ -143,8 +149,8 @@ const line = useQuery("line",getData("research-lines/get-research-lines"),{ enab
                     <Text>Area tematica:</Text>
                     <Select {...register("thematicAreaCode")}>
                     {
-                      program.data !== undefined 
-                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
+                      area.data !== undefined 
+                      ? ( area.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
                       ) : "" }
                    </Select>
                     </Col>
