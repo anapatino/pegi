@@ -45,6 +45,10 @@ export function Dashboard (){
               <Link  to="proposal" style={{ color: '#FFF' }} className ="bi bi-journal"/>
             </Button>
             <Spacer y={1} />
+            <Button light  rounded auto onClick={()=> setTitle("Repositorio")}>
+              <Link  to="table-of-proposals/" style={{ color: '#FFF' }} className ="bi bi-collection-fill"/>
+            </Button>
+            <Spacer y={1} />
             <Button light  rounded auto onClick={()=> setTitle("Proyecto")}>
               <Link  to="project" style={{ color: '#FFF' }} className ="bi bi-journal-bookmark-fill"/>
             </Button>
