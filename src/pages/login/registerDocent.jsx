@@ -2,36 +2,24 @@ import { Container,Modal, Text,Input,Radio,Button, Spacer, Col,Row } from "@next
 import { useForm } from "react-hook-form";
 import { Link  } from "react-router-dom";
 import apiClient from "../../data/http-common";
-import { useMutation,useQuery } from "react-query";
-import { useState ,useEffect} from "react";
+import { useMutation } from "react-query";
+import { useState } from "react";
 
 export function RegisterDocent (){
-    const { register, handleSubmit,watch,getValues,setValue} = useForm();
+    const { register, handleSubmit,watch,setValue} = useForm();
     const [visible, setVisible] = useState(false);
-    const [document, setDocument] = useState('');
 
     const handler = () => setVisible(true);
 
     const closeHandler = () => setVisible(false);
-    
+
     const onSubmit = (data) => {
-        setDocument(data.document);
+        user.mutate(data);
     }
 
     const user = useMutation(user =>{
         return apiClient.post("Professor",user ).then((res) => {if(res.data != null){handler()}});
     });
-
-    const getPerson = () =>{
-        return apiClient.get(`people/${document}`).then((res) => res.data);
-    }
-
-    const {data, isSuccess} = useQuery(["search",document], getPerson,{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
-    useEffect((() => {
-      if(data !== undefined){   
-        user.mutate(getValues());
-      }
-    }),[isSuccess,data,getValues,user]);
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>

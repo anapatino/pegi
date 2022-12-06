@@ -9,6 +9,7 @@ import { Proposal } from "../pages/dashboard/proposal/proposal";
 import { Project } from "../pages/dashboard/project/project";
 import { Register, RegisterUser } from "../pages/login/register";
 import { RegisterDocent } from "../pages/login/registerDocent";
+import { RegisterStudent } from "../pages/login/registerStudent";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
           {
             path: "docent/",
             element: <RegisterDocent />,
+          },
+          {
+            path: "student/",
+            element: <RegisterStudent />,
           },
         ],
       },

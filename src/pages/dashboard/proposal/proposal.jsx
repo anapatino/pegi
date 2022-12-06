@@ -1,25 +1,29 @@
-import { Container,Modal,Row,Button,Input,Spacer,Col,Text,Textarea,Badge,Popover,Grid} from "@nextui-org/react";
+import { Container,Modal,Row,Button,Input,Spacer,Col,Text,Textarea} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
 import { useNavigate  } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery ,useMutation} from "react-query";
 import { useState,useEffect } from "react";
 import {Select} from "../../../styled-components/Select";
 
 export function Proposal () {
-    const [isOpen, setIsOpen] = useState(false);
-    const [enable, setEnable] = useState(false);
     const  user = JSON.parse(localStorage.getItem('userConfiguration'));
-    const { register, handleSubmit,setValue, watch} = useForm();
+    const { register, handleSubmit, watch} = useForm();
     const codeLine = watch('codeLine');
     const codeSubline = watch('codeSubline');
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
+    
+    const Handler = () => setVisible(true);
     const closeHandler = () => setVisible(false);
 
 
     const onSubmit = (data) => {
-      alert(JSON.stringify(data));
+      const {codeLine,codeSubline,academicProgramCode,amountCredits, ...newData} = data;
+      const newProposal ={
+        ...newData,status: "pendiente",
+      };
+      proposal.mutate(newProposal);
     };
 
     const getParams = (ruta) =>{
@@ -30,63 +34,30 @@ export function Proposal () {
       return apiClient.get(ruta).then((res) => res.data);
     }
 
-  const query = useQuery(["search",user],()=> getParams(`people/${user.personDocument}`),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
+    const proposal = useMutation(prop =>{
+        return apiClient.post("Proposals",prop ).then( (res)=> {if(res.data !=null){Handler();}});
+    });
 
-  const program = useQuery("program",() => getData("AcademicsProgram/GetAllAcademicPrograms"),{refetchOnWindowFocus:false,retry:false});
+    const query = useQuery(["search",user],()=> getParams(`people/${user.personDocument}`),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
 
-  const line = useQuery("line",() => getData("research-lines/get-research-lines"),{refetchOnWindowFocus:false,retry:false});
+    const line = useQuery("line",() => getData("research-lines/get-research-lines"),{refetchOnWindowFocus:false,retry:false});
 
-  const subline = useQuery(["subline",codeLine],() => getParams(`research-sub-lines/${codeLine}`),{enabled: !!codeLine,refetchOnWindowFocus:false,retry:false});
+    const subline = useQuery(["subline",codeLine],() => getParams(`research-sub-lines/${codeLine}`),{enabled: !!codeLine,refetchOnWindowFocus:false,retry:false});
 
-  const area = useQuery(["area",codeSubline],() => getParams(`Thematic-areas/${codeSubline}`),{enabled: !!codeSubline,refetchOnWindowFocus:false,retry:false});
+    const area = useQuery(["area",codeSubline],() => getParams(`Thematic-areas/${codeSubline}`),{enabled: !!codeSubline,refetchOnWindowFocus:false,retry:false});
 
   useEffect(()=>{
     if(query.isError ){
       alert('No puedes registrar propueta si no llenas tu hoja de vida');
       navigate("..");
     }
-    setEnable(true);
-  },[query,navigate,visible])
+   
+  },[query,navigate])
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
             <Row justify="flex-start" align='center' gap={1} css={{width:'70rem'}}>
             <h3>Presentacion de propuesta</h3>
-            <Spacer x={1}/>
-            <Badge enableShadow disableOutline color="primary">
-                Sin entregar
-            </Badge>
-            <Spacer x={1}/>
-            <Button light auto  rounded>
-                Historial
-            </Button>
-            <Spacer x={23}/>
-            <Popover placement="bottom-right" isOpen={isOpen} onOpenChange={setIsOpen}>
-            <Popover.Trigger>
-            <Button light color="secondary" rounded auto autoFocus="false" >
-                <i  to="" style={{ color: '#FFF' }} className ="bi bi-dash-square"/>
-            </Button>
-            </Popover.Trigger>
-            <Popover.Content>
-            <Grid.Container
-              css={{ borderRadius: "14px", padding: "0.75rem", width: "21rem",alignItems:'center' }}
-            >
-              <Row justify="center" align="center">
-                <Text b>Confirmar</Text>
-              </Row>
-                <Text>
-                  Desea eliminar la informacion suministrada?
-                </Text>
-                <Button size="sm" light onClick={()=>setIsOpen(false)}>
-                  Cancel
-                </Button>
-                <Spacer x={1}/>
-                <Button size="sm" shadow color="error">
-                  Eliminar
-                </Button>
-            </Grid.Container>
-            </Popover.Content>
-            </Popover>
             </Row>
             <Container css={{margin:'0',paddingTop:'2rem',height:'27.5rem',overflowY:'auto'}}  >
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,7 +66,7 @@ export function Proposal () {
                     <h4>Informacion General</h4>
                 </Col>
                 <Col css={{width:'70%'}}>
-                    <Input {...register("date",{ required: true })} clearable label="Fecha" type="date" width="15rem" />
+                    <Input {...register("date",{ required: true })}  label="Fecha" type="date" width="15rem" />
                     <Input {...register("title",{ required: true })} clearable label="Titulo"  width="28rem" css={{marginLeft:'1rem'}}/>
                 </Col>
                 </Row>
@@ -107,17 +78,7 @@ export function Proposal () {
                     <Text css={{margin:'0'}}>Primer Intregrante </Text>
                 </Col>
                 <Row  justify="flex-start" align="center" css={{width:'68%',marginTop:'2rem'}}> 
-                    <Input {...register("personDocument",{ required: true })} label="Documento" clearable width="30rem" />
-                    <Col css={{marginLeft:'2rem',marginRight:'1rem'}}>
-                    <Text>Programa Academico:</Text>
-                    <Select {...register("academicProgramCode")}>
-                    {
-                      program.data !== undefined
-                      ? ( program.data.data.map((p)=> ( <option value={p.code}>{p.name}</option>))
-                      ) : "" }
-                   </Select>
-                    </Col>
-                    <Input {...register("amountCredits",{ required: true })} clearable label="N° Creditos"  width="35rem" />
+                    <Input {...register("personDocument",{ required: true })} label="Documento" clearable width="14rem" />
                 </Row>
                 </Row>
                 <Spacer y={2}/>
@@ -234,7 +195,7 @@ export function Proposal () {
              <Modal.Header>
                 <Spacer y={2}/>
                 <Text id="modal-title" size={18}>
-                   Recuerde llenar la hoja de vida para poder ingresar la propuesta.
+                   Registro de propuesta exitoso
                 </Text>
              </Modal.Header>
              <Spacer y={0.9}/>  

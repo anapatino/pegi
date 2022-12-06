@@ -57,8 +57,7 @@ export function RegisterCv() {
             reset(data.data);
         }
     },[isLoading,reset,data])
-
-   console.log(city);
+    
     return(
         <Container css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}} >
             <Row justify="space-between"gap={1}>

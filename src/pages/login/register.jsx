@@ -28,12 +28,18 @@ export function RegisterUser (){
 
     return(
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
-         <Row justify="space-between" align="center">
+        <Row justify="space-between" align="center">
            <h3>Registrar Usuario</h3>
-           <Button bordered color="primary" auto rounded >
+            <Row justify="flex-end" align="center" css={{width:'50%'}}>
+            <Button bordered color="primary" auto rounded >
                 <Link to="docent/" >Registrar docente</Link>
             </Button>
-         </Row>
+            <Spacer/>
+            <Button bordered color="primary" auto rounded >
+                <Link to="student/" >Registrar estudiante</Link>
+            </Button>
+            </Row>
+        </Row>    
          <form onSubmit={handleSubmit(onSubmit)}>
           <Col css={{paddingTop:'10px',width:'50%', overflowY:'auto'}}>
             <Input {...register("name",{ required: true })} label="Correo" width="22rem" clearable css={{margin:'1rem'}}/>
