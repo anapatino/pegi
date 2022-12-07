@@ -79,6 +79,15 @@ export function ProjectsTable (){
                 </Col>
                 <Col>
                   <Tooltip
+                    content="Historial"
+                  >
+                    <IconButton>
+                        <i className="bi bi-folder"></i>
+                    </IconButton>
+                  </Tooltip>
+                </Col>
+                <Col>
+                  <Tooltip
                     content="Eliminar"
                     color="error"
                     onClick={() =>setCode(user.code)}
