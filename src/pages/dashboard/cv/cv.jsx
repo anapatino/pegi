@@ -32,13 +32,17 @@ export function RegisterCv() {
         return apiClient.get(ruta).then((res) => res.data);
     }
 
+    const deleteParams = (ruta) =>{
+        return apiClient.delete(ruta).then((res) => res.data);
+    }
+
     const {data, isLoading} = useQuery(["search",user], ()=> getParams(`people/${user.personDocument}`),{ enabled: !!user,refetchOnWindowFocus:false,retry:false});
 
     const query = useMutation(people =>{
         return apiClient.post("people",people ).then(handler());
     });
 
-    const del = useQuery(["delete",document], ()=> getParams(`people/${document}`),{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
+    const del = useQuery(["delete",document], ()=> deleteParams(`people/${document}`),{ enabled: !!document,refetchOnWindowFocus:false,retry:false});
 
     if(del.isSuccess){
         window.location.reload();

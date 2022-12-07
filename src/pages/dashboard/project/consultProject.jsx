@@ -1,4 +1,4 @@
-import { Table, Row, Container,Col, Tooltip,Spacer,Modal, Text } from "@nextui-org/react";
+import { Table, Row, Container,Col, Tooltip, Text } from "@nextui-org/react";
 import { StyledBadge } from "../../../assets/icons/StyledBadge";
 import { EyeIcon } from "../../../assets/icons/EyeIcon";
 import { DeleteIcon } from "../../../assets/icons/DeleteIcon";
@@ -15,16 +15,24 @@ export function ConsultProject (){
 }
 
 export function ProjectsTable (){
-    const [visible, setVisible] = useState(false);
     const person= JSON.parse(localStorage.getItem('userConfiguration'));
-    const handler = () => setVisible(true);
-    const closeHandler = () => setVisible(false);
+    const [code, setCode] = useState('');
 
     const getParams = (ruta) =>{
         return apiClient.get(ruta).then((res) => res.data);
     }
 
+    const deleteParams = (ruta) =>{
+      return apiClient.delete(ruta).then((res) => res.data);
+  }
+
     const {data} = useQuery(["search",person], ()=> getParams(`Proyect/get-proyect-document${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
+
+    const del = useQuery(["delete",code], ()=> deleteParams(`Proyect/${code}`),{ enabled: !!code,refetchOnWindowFocus:false,retry:false});
+
+    if(del.isSuccess){
+        window.location.reload();
+    }
 
     const columns = [
         { name: "CODIGO", uid: "code" },
@@ -55,7 +63,7 @@ export function ProjectsTable (){
               <Row justify="flex-start" align="center">
                 <Col>
                   <Tooltip content="Detalles">
-                    <IconButton onClick={() => console.log("View user", user.code)}>
+                    <IconButton >
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
@@ -64,7 +72,7 @@ export function ProjectsTable (){
                   <Tooltip
                     content="Eliminar"
                     color="error"
-                    onClick={() => console.log("Delete user", user.code)}
+                    onClick={() =>setCode(user.code)}
                   >
                     <IconButton>
                       <DeleteIcon size={20} fill="#FF0080" />
@@ -112,20 +120,6 @@ export function ProjectsTable (){
             </Table.Body>
             </Table>
             </Col>
-            <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={visible}
-                onClose={closeHandler}
-            >
-            <Modal.Header>
-                <Spacer y={2}/>
-                <Text id="modal-title" size={18}>
-                    Registro de usuario exitoso
-                </Text>
-                </Modal.Header>
-                <Spacer y={0.9}/>  
-            </Modal>
         </Container>
     );
 }

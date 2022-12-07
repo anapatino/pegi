@@ -1,4 +1,4 @@
-import { Table, Row, Container,Col, Tooltip,Spacer,Modal, Text } from "@nextui-org/react";
+import { Table, useModal,Button,Modal,Row, Container,Col, Tooltip, Text } from "@nextui-org/react";
 import { StyledBadge } from "../../../assets/icons/StyledBadge";
 import { EyeIcon } from "../../../assets/icons//EyeIcon";
 import { DeleteIcon } from "../../../assets/icons//DeleteIcon";
@@ -15,16 +15,25 @@ export function ConsultProposal (){
 }
 
 export function ProposalsTable (){
-    const [visible, setVisible] = useState(false);
     const person= JSON.parse(localStorage.getItem('userConfiguration'));
-    const handler = () => setVisible(true);
-    const closeHandler = () => setVisible(false);
+    const { setVisible, bindings } = useModal();
+    const [code, setCode] = useState('');
 
     const getParams = (ruta) =>{
         return apiClient.get(ruta).then((res) => res.data);
     }
 
+    const deleteParams = (ruta) =>{
+      return apiClient.delete(ruta).then((res) => res.data);
+  }
+
     const {data} = useQuery(["search",person], ()=> getParams(`Proposals/get-proposals-document/${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
+
+    const del = useQuery(["delete",code], ()=> deleteParams(`Proposals/${code}`),{ enabled: !!code,refetchOnWindowFocus:false,retry:false});
+
+    if(del.isSuccess){
+        window.location.reload();
+    }
 
     const columns = [
         { name: "CODIGO", uid: "code" },
@@ -50,7 +59,7 @@ export function ProposalsTable (){
               <Row justify="flex-start" align="center">
                 <Col>
                   <Tooltip content="Detalles">
-                    <IconButton onClick={() => console.log("View user", user.code)}>
+                    <IconButton onClick={() => setVisible()}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
@@ -59,7 +68,7 @@ export function ProposalsTable (){
                   <Tooltip
                     content="Eliminar"
                     color="error"
-                    onClick={() => console.log("Delete user", user.code)}
+                    onClick={() => setCode(user.code)}
                   >
                     <IconButton>
                       <DeleteIcon size={20} fill="#FF0080" />
@@ -107,20 +116,48 @@ export function ProposalsTable (){
             </Table.Body>
             </Table>
             </Col>
-            <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={visible}
-                onClose={closeHandler}
-            >
-            <Modal.Header>
-                <Spacer y={2}/>
-                <Text id="modal-title" size={18}>
-                    Registro de usuario exitoso
-                </Text>
+            <div>
+                  <Modal
+                      scroll
+                      width="600px"
+                      aria-labelledby="modal-title"
+                      aria-describedby="modal-description"
+                      {...bindings}
+                      >
+                <Modal.Header>
+                  <Text id="modal-title" size={18}>
+                    Modal with a lot of content
+                  </Text>
                 </Modal.Header>
-                <Spacer y={0.9}/>  
-            </Modal>
+                <Modal.Body>
+                  <Text id="modal-description">
+                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                    dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+                    ac consectetur ac, vestibulum at eros. Praesent commodo cursus
+                    magna, vel scelerisque nisl consectetur et. Cras mattis consectetur
+                    purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
+                    egestas eget quam. Morbi leo risus, porta ac consectetur ac,
+                    vestibulum at eros. Praesent commodo cursus magna, vel scelerisque
+                    nisl consectetur et. Cras mattis consectetur purus sit amet
+                    fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
+                    quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                    dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+
+                  </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button auto flat color="error" onClick={() => setVisible(false)}>
+                    Close
+                  </Button>
+                  <Button auto onClick={() => setVisible(false)}>
+                    Agree
+                  </Button>
+                </Modal.Footer>
+                </Modal>
+            </div>
         </Container>
+        
     );
 }
