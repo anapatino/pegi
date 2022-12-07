@@ -11,7 +11,7 @@ export function Project () {
              <h3>Registrar Proyecto</h3>
             <Popover placement="bottom-right" isOpen={isOpen} onOpenChange={setIsOpen}>
             <Popover.Trigger>
-            <Button flat color="secondary" rounded auto autoFocus="false" >
+            <Button type="" flat color="secondary" rounded auto autoFocus="false" >
                 <i  to="" style={{ color: '#FFF' }} className ="bi bi-dash-square"/>
             </Button>
             </Popover.Trigger>

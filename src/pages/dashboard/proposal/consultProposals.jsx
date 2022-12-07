@@ -17,21 +17,14 @@ export function ConsultProposal (){
 export function ProposalsTable (){
     const [visible, setVisible] = useState(false);
     const person= JSON.parse(localStorage.getItem('userConfiguration'));
-    let users = [];
     const handler = () => setVisible(true);
     const closeHandler = () => setVisible(false);
 
-    
     const getParams = (ruta) =>{
         return apiClient.get(ruta).then((res) => res.data);
     }
 
-    const {data, isLoading} = useQuery(["search",person], ()=> getParams(`Proposals/get-proposals-document/${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
-
-    if(!isLoading && data != null ){
-        data.data.map((p) => users.push({'id': p.code,...p}))
-        console.log(users);
-    }
+    const {data} = useQuery(["search",person], ()=> getParams(`Proposals/get-proposals-document/${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
 
     const columns = [
         { name: "CODIGO", uid: "code" },
@@ -49,21 +42,6 @@ export function ProposalsTable (){
                 {user.title}
               </Text>
             );
-          case "role":
-            return (
-              <Col>
-                <Row>
-                  <Text b size={14} css={{ tt: "capitalize" }}>
-                    {cellValue}
-                  </Text>
-                </Row>
-                <Row>
-                  <Text b size={13} css={{ tt: "capitalize", color: "$accents7" }}>
-                    {user.team}
-                  </Text>
-                </Row>
-              </Col>
-            );
           case "status":
             return <StyledBadge type={user.status}>{cellValue}</StyledBadge>;
     
@@ -71,17 +49,17 @@ export function ProposalsTable (){
             return (
               <Row justify="flex-start" align="center">
                 <Col>
-                  <Tooltip content="Details">
-                    <IconButton onClick={() => console.log("View user", user.id)}>
+                  <Tooltip content="Detalles">
+                    <IconButton onClick={() => console.log("View user", user.code)}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
                 </Col>
                 <Col>
                   <Tooltip
-                    content="Delete user"
+                    content="Eliminar"
                     color="error"
-                    onClick={() => console.log("Delete user", user.id)}
+                    onClick={() => console.log("Delete user", user.code)}
                   >
                     <IconButton>
                       <DeleteIcon size={20} fill="#FF0080" />
@@ -118,9 +96,9 @@ export function ProposalsTable (){
                 </Table.Column>
                 )}
             </Table.Header>
-            <Table.Body items={users}>
+            <Table.Body items={data?.data || []}>
                 {(item) => (
-                <Table.Row>
+                <Table.Row key={item.code}>
                     {(columnKey) => (
                     <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>
                     )}
