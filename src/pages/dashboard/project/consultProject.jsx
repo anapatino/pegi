@@ -1,0 +1,131 @@
+import { Table, Row, Container,Col, Tooltip,Spacer,Modal, Text } from "@nextui-org/react";
+import { StyledBadge } from "../../../assets/icons/StyledBadge";
+import { EyeIcon } from "../../../assets/icons/EyeIcon";
+import { DeleteIcon } from "../../../assets/icons/DeleteIcon";
+import { IconButton } from "../../../assets/icons/IconButton";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import apiClient from "../../../data/http-common";
+import { useQuery } from "react-query";
+
+
+
+export function ConsultProject (){
+    return(<Outlet />);
+}
+
+export function ProjectsTable (){
+    const [visible, setVisible] = useState(false);
+    const person= JSON.parse(localStorage.getItem('userConfiguration'));
+    const handler = () => setVisible(true);
+    const closeHandler = () => setVisible(false);
+
+    const getParams = (ruta) =>{
+        return apiClient.get(ruta).then((res) => res.data);
+    }
+
+    const {data} = useQuery(["search",person], ()=> getParams(`Proyect/get-proyect-document${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
+
+    const columns = [
+        { name: "CODIGO", uid: "code" },
+        { name: "CONTENIDO", uid: "content" },
+        { name: "ESTADO", uid: "status" },
+        { name: "CALIFICACION", uid: "score" },
+        { name: "ACTIONS", uid: "actions" },
+    ];
+
+      const renderCell = (user, columnKey) => {
+        const cellValue = user[columnKey];
+        switch (columnKey) {
+          case "title":
+            return (
+              <Text >
+                {user.title}
+              </Text>
+            );
+          case "status":
+            return <StyledBadge type={user.status}>{cellValue}</StyledBadge>;
+          
+          case "score":
+            return (
+              <Text >{user.score}</Text>
+              );
+          case "actions":
+            return (
+              <Row justify="flex-start" align="center">
+                <Col>
+                  <Tooltip content="Detalles">
+                    <IconButton onClick={() => console.log("View user", user.code)}>
+                      <EyeIcon size={20} fill="#979797" />
+                    </IconButton>
+                  </Tooltip>
+                </Col>
+                <Col>
+                  <Tooltip
+                    content="Eliminar"
+                    color="error"
+                    onClick={() => console.log("Delete user", user.code)}
+                  >
+                    <IconButton>
+                      <DeleteIcon size={20} fill="#FF0080" />
+                    </IconButton>
+                  </Tooltip>
+                </Col>
+              </Row>
+            );
+          default:
+            return cellValue;
+        }
+      };
+
+    return(
+        <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
+            <h3>Mis Proyectos</h3>
+            <Col css={{paddingTop:'10px',width:'80%', overflowY:'auto'}}>
+            <Table
+                aria-label="Example table with custom cells"
+                css={{
+                    height: "auto",
+                    minWidth: "100%",
+                }}
+                selectionMode="none"
+            >
+            <Table.Header columns={columns}>
+                {(column) => (
+                <Table.Column
+                    key={column.uid}
+                    hideHeader={column.uid === "actions"}
+                    align={column.uid === "actions" ? "center" : "start"}
+                >
+                    {column.name}
+                </Table.Column>
+                )}
+            </Table.Header>
+            <Table.Body items={data?.data || []}>
+                {(item) => (
+                <Table.Row key={item.code}>
+                    {(columnKey) => (
+                    <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>
+                    )}
+                </Table.Row>
+                )}
+            </Table.Body>
+            </Table>
+            </Col>
+            <Modal
+                closeButton
+                aria-labelledby="modal-title"
+                open={visible}
+                onClose={closeHandler}
+            >
+            <Modal.Header>
+                <Spacer y={2}/>
+                <Text id="modal-title" size={18}>
+                    Registro de usuario exitoso
+                </Text>
+                </Modal.Header>
+                <Spacer y={0.9}/>  
+            </Modal>
+        </Container>
+    );
+}

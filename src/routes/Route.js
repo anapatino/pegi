@@ -15,6 +15,11 @@ import {
   ProposalsTable,
 } from "../pages/dashboard/proposal/consultProposals";
 
+import {
+  ConsultProject,
+  ProjectsTable,
+} from "../pages/dashboard/project/consultProject";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -78,6 +83,16 @@ export const router = createBrowserRouter([
       {
         path: "project",
         element: <Project />,
+      },
+      {
+        path: "table-of-project/",
+        element: <ConsultProject />,
+        children: [
+          {
+            path: "",
+            element: <ProjectsTable />,
+          },
+        ],
       },
     ],
   },

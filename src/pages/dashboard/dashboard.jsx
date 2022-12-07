@@ -52,6 +52,10 @@ export function Dashboard (){
             <Button light  rounded auto onClick={()=> setTitle("Proyecto")}>
               <Link  to="project" style={{ color: '#FFF' }} className ="bi bi-journal-bookmark-fill"/>
             </Button>
+            <Spacer y={1} />
+            <Button light  rounded auto onClick={()=> setTitle("Repositorio")}>
+              <Link  to="table-of-project/" style={{ color: '#FFF' }} className ="bi bi-box2-fill"/>
+            </Button>
           </div>) 
           :  user.role === "administrador" ?
           (
@@ -60,7 +64,14 @@ export function Dashboard (){
               <Link  to="register" style={{ color: '#FFF' }} className ="bi bi-person-fill-gear"/>
             </Button>
             </div>
-          ) : "" }
+          ) : user.role === "docente" ? 
+        (
+          <div>
+            <Button light  rounded auto onClick={()=> setTitle("Perfil")}>
+               <Link  to="cv" style={{ color: '#FFF' }} className ="bi bi-person-fill"/>
+             </Button>
+          </div>
+        ):""}
 
         </Container>
         <Container css={{minHeight:'100vh'}} >
