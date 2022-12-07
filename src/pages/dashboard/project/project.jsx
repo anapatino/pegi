@@ -1,6 +1,7 @@
 import { Container,Row,Popover,Button,Text,Grid,Spacer} from "@nextui-org/react";
 import { ReactComponent as Document} from "../../../assets/icons/Document.svg";
-import {  useState } from "react";
+import React ,{  useState }  from "react";
+import {Butto} from "../../../styled-components/Input";
 
 export function Project () {
     const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +37,7 @@ export function Project () {
             </Popover.Content>
             </Popover>
              </Row>
-             <Button bordered color="secondary" auto  css={{width:'20rem',height:'10rem',margin:'2rem 6rem'}}>
-                <Document/>
-             </Button>
+             <FileUploader/>
              <Row justify="space-between" css={{width:'10rem',margin:'1rem 6rem'}}>
                 <Button rounded size="sm" light onClick={{}}>
                   Cancelar
@@ -51,3 +50,38 @@ export function Project () {
         </Container>
     );
 }
+
+export const FileUploader = () => {
+
+  const [filename, setFilename]=useState();
+
+  const hiddenFileInput = React.useRef(null);
+  const handleClick = event => {
+    event.preventDefault();
+    hiddenFileInput.current.click();
+  };
+  const handleChange = async (event) => {
+    if(filename!=null && filename!=="" && event.target.files[0]!==undefined){
+      console.log(event.target.file[0]);
+      //await deleteFile();
+    }
+    if(event.target.files[0]!==undefined){
+      //await Upload(event.target.files[0]);
+     console.log(event.target.files);
+
+  }
+  };
+
+  return <>
+       <Butto  onClick={handleClick}>
+         <Document/>
+      </Butto>
+      
+      <input type="file"
+             ref={hiddenFileInput}
+             style={{display:'none'}} 
+             onChange={handleChange}
+             accept="application/pdf,image/*"
+      />
+      </>
+};
