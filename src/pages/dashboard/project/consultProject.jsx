@@ -1,4 +1,4 @@
-import { Table, Row, Container,Col, Tooltip, Text } from "@nextui-org/react";
+import { Table,useModal,Modal, Row, Button,Spacer,Container,Loading,Col, Tooltip, Text } from "@nextui-org/react";
 import { StyledBadge } from "../../../assets/icons/StyledBadge";
 import { EyeIcon } from "../../../assets/icons/EyeIcon";
 import { DeleteIcon } from "../../../assets/icons/DeleteIcon";
@@ -16,7 +16,9 @@ export function ConsultProject (){
 
 export function ProjectsTable (){
     const person= JSON.parse(localStorage.getItem('userConfiguration'));
+    const { setVisible, bindings } = useModal();
     const [code, setCode] = useState('');
+    const [codeProject, setCodeProject] = useState('');
 
     const getParams = (ruta) =>{
         return apiClient.get(ruta).then((res) => res.data);
@@ -26,13 +28,20 @@ export function ProjectsTable (){
       return apiClient.delete(ruta).then((res) => res.data);
   }
 
-    const {data} = useQuery(["search",person], ()=> getParams(`Proyect/get-proyect-document${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
+    const {data,isSuccess,isLoading} = useQuery(["search",person], ()=> getParams(`Proyect/get-proyect-document${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
 
     const del = useQuery(["delete",code], ()=> deleteParams(`Proyect/${code}`),{ enabled: !!code,refetchOnWindowFocus:false,retry:false});
+
+    const view = useQuery(["view",codeProject], ()=> getParams(`/Proyect/get-proyect-code/${codeProject}`),{ enabled: !!codeProject,refetchOnWindowFocus:false,retry:false});
 
     if(del.isSuccess){
         window.location.reload();
     }
+
+    const handler = (code) => {
+      setCodeProject(code);
+      setVisible(true);
+    };
 
     const columns = [
         { name: "CODIGO", uid: "code" },
@@ -62,7 +71,7 @@ export function ProjectsTable (){
             return (
               <Row justify="flex-start" align="center">
                 <Col>
-                  <Tooltip content="Detalles">
+                  <Tooltip content="Detalles"  onClick={() =>handler(user.code)}>
                     <IconButton >
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
@@ -90,7 +99,8 @@ export function ProjectsTable (){
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
             <h3>Mis Proyectos</h3>
             <Col css={{paddingTop:'10px',width:'80%', overflowY:'auto'}}>
-            <Table
+            {isSuccess && data?.data != null ?
+            (<Table
                 aria-label="Example table with custom cells"
                 css={{
                     height: "auto",
@@ -118,8 +128,52 @@ export function ProjectsTable (){
                 </Table.Row>
                 )}
             </Table.Body>
-            </Table>
+            </Table>)
+             :isLoading ?
+             ( <Loading type="points" />) : "Hubo un error al cargar los datos"
+           }
             </Col>
+            <Modal
+                scroll
+                width="35rem"
+                {...bindings}
+            >
+            <Modal.Header>
+              <h2>Detalles del documento</h2>
+            </Modal.Header>
+            <Modal.Body>
+              {view.isSuccess ?
+                (
+                  <Col css={{paddingLeft:'0.4rem',paddingRigth:'0.4rem'}}>
+                  <Row align="center">
+                      <Text weight="bold" size={18}>Estado:</Text>
+                      <Spacer x={0.5}/>
+                      <StyledBadge type={view.data.data.status}>{view.data.data.status}</StyledBadge>
+                    </Row>
+                    <Spacer y={1}/>
+                    <Row align="center">
+                      <Text weight="bold" size={18}>Calificacion:</Text>
+                      <Spacer x={0.5}/>
+                      <Text> {view.data.data.score}</Text>
+                    </Row>
+                    <Spacer y={0.5}/>
+                    <Text weight="bold" size={18}>Descargar documento</Text>
+                    <Button size={"md"} css={{marginTop:'1rem'}}>
+                      {view.data.data.content}
+                    </Button>
+                    <Text> </Text>
+                 </Col>
+                )
+                :view.isLoading ?
+                (<Loading type="points" />) : "Hubo un error al cargar los datos"
+              }  
+              </Modal.Body>
+              <Modal.Footer>
+                <Button auto flat color="error" onClick={() => setVisible(false)}>
+                   cerrar
+                </Button>
+              </Modal.Footer>
+            </Modal>
         </Container>
     );
 }

@@ -73,6 +73,7 @@ export const router = createBrowserRouter([
       {
         path: "table-of-proposals/",
         element: <ConsultProposal />,
+        errorElement: <ErrorPage />,
         children: [
           {
             path: "",
@@ -87,6 +88,7 @@ export const router = createBrowserRouter([
       {
         path: "table-of-project/",
         element: <ConsultProject />,
+        errorElement: <ErrorPage />,
         children: [
           {
             path: "",

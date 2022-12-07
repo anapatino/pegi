@@ -1,4 +1,4 @@
-import { Table, useModal,Button,Modal,Row, Container,Col, Tooltip, Text } from "@nextui-org/react";
+import { Table, useModal,Button,Modal,Row, Loading,Container,Col, Tooltip, Text, Spacer } from "@nextui-org/react";
 import { StyledBadge } from "../../../assets/icons/StyledBadge";
 import { EyeIcon } from "../../../assets/icons//EyeIcon";
 import { DeleteIcon } from "../../../assets/icons//DeleteIcon";
@@ -18,6 +18,7 @@ export function ProposalsTable (){
     const person= JSON.parse(localStorage.getItem('userConfiguration'));
     const { setVisible, bindings } = useModal();
     const [code, setCode] = useState('');
+    const [codeProposal, setCodeProposal] = useState('');
 
     const getParams = (ruta) =>{
         return apiClient.get(ruta).then((res) => res.data);
@@ -27,13 +28,20 @@ export function ProposalsTable (){
       return apiClient.delete(ruta).then((res) => res.data);
   }
 
-    const {data} = useQuery(["search",person], ()=> getParams(`Proposals/get-proposals-document/${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
+    const {data,isSuccess,isLoading} = useQuery(["search",person], ()=> getParams(`Proposals/get-proposals-document/${person.personDocument}`),{ enabled: !!person,refetchOnWindowFocus:false,retry:false});
 
     const del = useQuery(["delete",code], ()=> deleteParams(`Proposals/${code}`),{ enabled: !!code,refetchOnWindowFocus:false,retry:false});
+
+    const view = useQuery(["view",codeProposal], ()=> getParams(`Proposals/get-proposal-code/${codeProposal}`),{ enabled: !!codeProposal,refetchOnWindowFocus:false,retry:false});
 
     if(del.isSuccess){
         window.location.reload();
     }
+
+    const handler = (code) => {
+      setCodeProposal(code);
+      setVisible(true);
+    };
 
     const columns = [
         { name: "CODIGO", uid: "code" },
@@ -59,7 +67,7 @@ export function ProposalsTable (){
               <Row justify="flex-start" align="center">
                 <Col>
                   <Tooltip content="Detalles">
-                    <IconButton onClick={() => setVisible()}>
+                    <IconButton onClick={() => handler(user.code)}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
@@ -86,7 +94,8 @@ export function ProposalsTable (){
         <Container  css={{paddingTop:'10px',height:'40rem', overflow:'hidden'}}>
             <h3>Mis Propuestas</h3>
             <Col css={{paddingTop:'10px',width:'80%', overflowY:'auto'}}>
-            <Table
+              {isSuccess && data?.data != null ?
+            (<Table
                 aria-label="Example table with custom cells"
                 css={{
                     height: "auto",
@@ -114,49 +123,72 @@ export function ProposalsTable (){
                 </Table.Row>
                 )}
             </Table.Body>
-            </Table>
+            </Table>)
+            :isLoading ?
+              ( <Loading type="points" />) : "Hubo un error al cargar los datos"
+            }
             </Col>
-            <div>
-                  <Modal
-                      scroll
-                      width="600px"
-                      aria-labelledby="modal-title"
-                      aria-describedby="modal-description"
-                      {...bindings}
-                      >
-                <Modal.Header>
-                  <Text id="modal-title" size={18}>
-                    Modal with a lot of content
-                  </Text>
-                </Modal.Header>
-                <Modal.Body>
-                  <Text id="modal-description">
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                    dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-                    ac consectetur ac, vestibulum at eros. Praesent commodo cursus
-                    magna, vel scelerisque nisl consectetur et. Cras mattis consectetur
-                    purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-                    egestas eget quam. Morbi leo risus, porta ac consectetur ac,
-                    vestibulum at eros. Praesent commodo cursus magna, vel scelerisque
-                    nisl consectetur et. Cras mattis consectetur purus sit amet
-                    fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
-                    quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                    dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-
-                  </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button auto flat color="error" onClick={() => setVisible(false)}>
-                    Close
-                  </Button>
-                  <Button auto onClick={() => setVisible(false)}>
-                    Agree
-                  </Button>
-                </Modal.Footer>
-                </Modal>
-            </div>
+            <Modal
+                scroll
+                width="45rem"
+                {...bindings}
+            >
+        
+            <Modal.Header>
+              <h2>{view.isSuccess ? view.data.data.title : ""}</h2>
+            </Modal.Header>
+                {view.isSuccess ?
+                (  
+            <Modal.Body>
+                  <Col css={{paddingLeft:'0.4rem',paddingRigth:'0.4rem'}}>
+                  <Row align="center">
+                      <Text weight="bold" size={18}>Estado:</Text>
+                      <Spacer x={0.5}/>
+                      <StyledBadge type={view.data.data.status}>{view.data.data.status}</StyledBadge>
+                    </Row>
+                    <Row align="center">
+                      <Text weight="bold" size={18}>Fecha:</Text>
+                      <Spacer x={0.5}/>
+                      <Text> {view.data.data.date}</Text>
+                    </Row>
+                    <Spacer y={0.5}/>
+                    <Row align="center">
+                      <Text weight="bold" size={18}>Objetivo General:</Text>
+                      <Spacer x={0.5}/>
+                      <Text> {view.data.data.generalObjective}</Text>
+                    </Row>
+                    <Spacer y={0.2}/>
+                    <Row align="center">
+                      <Text weight="bold" size={18}>Objetivos Especificos:</Text>
+                      <Spacer x={0.5}/>
+                      <Text> {view.data.data.specificObjective}</Text>
+                    </Row>
+                    <Spacer y={0.2}/>
+                    <Text weight="bold" size={18}>Planteamiento del problema:</Text>
+                    <Text> {view.data.data.approach}</Text>
+                    <Spacer y={0.2}/>
+                    <Text weight="bold" size={18}>Justificacion:</Text>
+                    <Text> {view.data.data.justification}</Text>
+                    <Row align="center">
+                      <Text weight="bold" size={18}>Grupo de investigacion:</Text>
+                      <Spacer x={0.5}/>
+                      <Text> {view.data.data.investigationGroup}</Text>
+                    </Row>
+                    <Spacer y={0.2}/>
+                    <Text weight="bold" size={18}>Bibliografia:</Text>
+                    <Text> {view.data.data.bibliographical}</Text>
+                 </Col>
+              </Modal.Body>
+               )
+                :view.isLoading ?
+                (<Loading type="points" />) : "Hubo un error al cargar los datos"
+               }  
+              <Modal.Footer>
+                <Button auto flat color="error" onClick={() => setVisible(false)}>
+                   cerrar
+                </Button>
+              </Modal.Footer>
+            </Modal>
         </Container>
         
     );
