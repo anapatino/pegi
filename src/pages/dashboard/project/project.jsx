@@ -109,28 +109,30 @@ export function Project() {
         )}
       </Row>
       <Spacer y={2.3} />
-      <Button
-        id="submit"
-        rounded
-        size="sm"
-        shadow
-        color="secondary"
-        onClick={() => saveProject()}
-      >
-        Guardar
-      </Button>
       {isSuccess && data.data.length === 0 ? (
-        <>
-          <Message
-            type={"warning"}
-            title={
-              "No puedes registrar un proyecto sin previamente tener una propuesta."
-            }
-          />
-          {setTimeout(() => {
-            navigate("..");
-          }, 4000)}
-        </>
+        <Button id="submit" rounded size="sm" shadow color="secondary" disabled>
+          Guardar
+        </Button>
+      ) : (
+        <Button
+          id="submit"
+          rounded
+          size="sm"
+          shadow
+          color="secondary"
+          onClick={() => saveProject()}
+        >
+          Guardar
+        </Button>
+      )}
+
+      {isSuccess && data.data.length === 0 ? (
+        <Message
+          type={"warning"}
+          title={
+            "No puedes registrar un proyecto sin previamente tener una propuesta."
+          }
+        />
       ) : (
         ""
       )}

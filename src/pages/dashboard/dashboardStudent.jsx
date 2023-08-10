@@ -1,4 +1,4 @@
-import { Card, Text, Col, Row, Spacer } from "@nextui-org/react";
+import { Card, Text, Col, Row, Spacer, Loading } from "@nextui-org/react";
 import { getUser } from "../../data/user";
 import { useQuery } from "react-query";
 import { getStatisticsProposalByStudent } from "../../controllers/proposal";
@@ -91,6 +91,8 @@ export const DashboardStudent = () => {
               />
             </Row>
           </div>
+        ) : proposal.isLoading ? (
+          <Loading type="points" />
         ) : (
           ""
         )}
@@ -162,6 +164,8 @@ export const DashboardStudent = () => {
               </Text>
             </Col>
           </Row>
+        ) : project.isLoading ? (
+          <Loading type="points" />
         ) : (
           ""
         )}

@@ -6,6 +6,7 @@ import {
   Container,
   Input,
   Button,
+  Loading,
 } from "@nextui-org/react";
 import { useQuery, useMutation } from "react-query";
 import { getUser } from "../../data/user";
@@ -77,6 +78,9 @@ export const DashboardProfessor = () => {
           background: "#16181A",
           borderRadius: "2rem",
           padding: "1rem 2.5rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "self-start",
         }}
       >
         <Text b size={25}>
@@ -167,6 +171,10 @@ export const DashboardProfessor = () => {
               />
             </Row>
           </div>
+        ) : project.isLoading && proposal.isLoading ? (
+          <Container css={{ marginTop: "2.5rem" }}>
+            <Loading type="points" />
+          </Container>
         ) : (
           ""
         )}
