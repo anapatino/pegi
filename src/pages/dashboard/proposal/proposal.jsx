@@ -10,7 +10,6 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
-import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import { Select, SelectMedium } from "../../../styled-components/Select";
 import { getUser } from "../../../data/user";
@@ -40,7 +39,6 @@ export function Proposal() {
   } = useForm();
   const codeLine = watch("codeLine");
   const codeSubline = watch("codeSubline");
-  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     const date = FormatDate();
@@ -405,16 +403,31 @@ export function Proposal() {
               </Text>
               <Spacer y={2} />
               <Row justify="flex-end">
-                <Button
-                  id="submit"
-                  type="submit"
-                  color="secondary"
-                  autoFocus="false"
-                  rounded
-                  size="sm"
-                >
-                  Guardar
-                </Button>
+                {student.isSuccess && person.isSuccess ? (
+                  <Button
+                    id="submit"
+                    type="submit"
+                    color="secondary"
+                    autoFocus="false"
+                    rounded
+                    size="sm"
+                  >
+                    Guardar
+                  </Button>
+                ) : (
+                  <Button
+                    id="submit"
+                    type="submit"
+                    color="secondary"
+                    autoFocus="false"
+                    rounded
+                    disabled
+                    size="sm"
+                  >
+                    Guardar
+                  </Button>
+                )}
+
                 <Spacer x={2} />
               </Row>
               <Spacer y={2} />
@@ -423,29 +436,19 @@ export function Proposal() {
         </form>
       </Container>
       {person.isError ? (
-        <>
-          <Message
-            type={"warning"}
-            title={
-              "¡Por favor, completa tu hoja de vida antes de registrar una propuesta!"
-            }
-          />
-          {setTimeout(() => {
-            navigate("dashboard/student/");
-          }, 4000)}
-        </>
+        <Message
+          type={"warning"}
+          title={
+            "¡Por favor, completa tu hoja de vida antes de registrar una propuesta!"
+          }
+        />
       ) : student.isError ? (
-        <>
-          <Message
-            type={"warning"}
-            title={
-              "¡Por favor, Comuniquese con el administrador para ser registrado como Estudiante!"
-            }
-          />
-          {setTimeout(() => {
-            navigate("dashboard/student/");
-          }, 6000)}
-        </>
+        <Message
+          type={"warning"}
+          title={
+            "¡Por favor, Comuniquese con el administrador para ser registrado como Estudiante!"
+          }
+        />
       ) : (
         ""
       )}

@@ -6,7 +6,7 @@ export default axios.create({
 
 /*
 export default axios.create({
-  baseURL: "https://localhost:7239/",
+  baseURL: "https://peluquitamacarron.tk/",
 });
 
 */
