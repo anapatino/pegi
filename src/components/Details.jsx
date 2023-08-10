@@ -1,0 +1,127 @@
+import {
+  Container,
+  Modal,
+  Col,
+  Text,
+  Row,
+  Spacer,
+  Button,
+} from "@nextui-org/react";
+import { StyledBadge } from "../assets/icons/StyledBadge";
+import { useState } from "react";
+
+export default function Details(prop) {
+  const [visible, setVisible] = useState(true);
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+
+  return (
+    <Container>
+      <Modal scroll width="45rem" open={visible} onClose={closeModal}>
+        <Modal.Header>
+          <Text weight="bold" size={28}>
+            {prop.data?.title}
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <Col css={{ paddingLeft: "0.4rem", paddingRigth: "0.4rem" }}>
+            <Row>
+              <Row align="center">
+                <Text weight="bold" size={18}>
+                  Estado:
+                </Text>
+                <Spacer x={0.5} />
+                <StyledBadge type={prop.data?.status}>
+                  {prop.data?.status}
+                </StyledBadge>
+              </Row>
+              {prop.tutor != null ? (
+                <Row align="center">
+                  <Text weight="bold" size={18}>
+                    Tutor:
+                  </Text>
+                  <Spacer x={0.5} />
+                  <Text> {prop.tutor}</Text>
+                </Row>
+              ) : (
+                ""
+              )}
+            </Row>
+            <Row>
+              <Row align="center">
+                <Text weight="bold" size={18}>
+                  Fecha:
+                </Text>
+                <Spacer x={0.5} />
+                <Text> {prop.data?.date}</Text>
+              </Row>
+              {prop.evaluator != null ? (
+                <Row align="center">
+                  <Text weight="bold" size={18}>
+                    Evaluador:
+                  </Text>
+                  <Spacer x={0.5} />
+                  <Text> {prop.evaluator}</Text>
+                </Row>
+              ) : (
+                ""
+              )}
+            </Row>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Objetivo General:
+            </Text>
+            <Spacer y={0.5} />
+            <Text> {prop.data?.generalObjective}</Text>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Objetivos Especificos:
+            </Text>
+            <Spacer y={0.5} />
+            <Text> {prop.data?.specificObjective}</Text>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Planteamiento del problema:
+            </Text>
+            <Spacer y={0.5} />
+            <Text> {prop.data?.approach}</Text>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Justificacion:
+            </Text>
+            <Spacer y={0.5} />
+            <Text> {prop.data?.justification}</Text>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Grupo de investigacion:
+            </Text>
+            <Spacer x={0.5} />
+            <Text> {prop.researchGroup}</Text>
+            <Spacer y={0.8} />
+            <Text weight="bold" size={18}>
+              Bibliografia:
+            </Text>
+            <Spacer y={0.5} />
+            <Text> {prop.data?.bibliographical}</Text>
+          </Col>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            id="closeDetails"
+            auto
+            flat
+            color="error"
+            onClick={() => {
+              prop.onClose();
+              setVisible(false);
+            }}
+          >
+            cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
+  );
+}
