@@ -8,20 +8,20 @@ export function Navigation() {
       </div>
       <ListItems>
         <li>
-          <Link to="/" style={{ color: "#FFF" }}>
-            Principal
-          </Link>
-        </li>
-        <li>|</li>
-        <li>
-          <Link to="about" style={{ color: "#FFF" }}>
+          <Link to="about/" style={{ color: "#FFF" }}>
             Acerca de
           </Link>
         </li>
         <li>|</li>
         <li>
-          <Link to="contacto" style={{ color: "#FFF" }}>
+          <Link to="contact/" style={{ color: "#FFF" }}>
             Contacto
+          </Link>
+        </li>
+        <li>|</li>
+        <li>
+          <Link to="/" style={{ color: "#FFF" }}>
+            Descargar app
           </Link>
         </li>
       </ListItems>

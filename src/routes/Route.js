@@ -58,6 +58,8 @@ import { DashboardAdministrador } from "../pages/dashboard/dashboardAdministrado
 import { DashboardProfessor } from "../pages/dashboard/dashboardProfessor";
 import { DashboardStudent } from "../pages/dashboard/dashboardStudent";
 import { ModifyProposal } from "../pages/dashboard/proposal/modifyProposal";
+import { About } from "../pages/home/about";
+import { Contact } from "../pages/home/contact";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
+      },
+      {
+        path: "about/",
+        element: <About />,
+      },
+      {
+        path: "contact/",
+        element: <Contact />,
       },
     ],
   },
