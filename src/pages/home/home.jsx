@@ -12,7 +12,6 @@ import SplineEmbed from "../../components/SplineEmbed";
 export function Home() {
   const [home, setHome] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [splineLoaded, setSplineLoaded] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -20,9 +19,6 @@ export function Home() {
     }, 2000);
   }, []);
 
-  const handleSplineLoad = () => {
-    setSplineLoaded(true);
-  };
   return (
     <ContainerApp>
       {loading ? (
@@ -40,8 +36,8 @@ export function Home() {
         </Container>
       ) : (
         <>
-          <SplineEmbed onLoad={handleSplineLoad} />
-          {splineLoaded && home !== true ? (
+          <SplineEmbed />
+          {home !== true ? (
             <ContainerPricipal>
               <Navigation />
               <ContainerContent>
