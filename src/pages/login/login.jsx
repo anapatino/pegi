@@ -1,6 +1,14 @@
 import { ContainerMedium } from "../../styled-components/Containers";
 import { FormMedium } from "../../styled-components/Forms";
-import { Text, Input, Button, Loading, Modal, Spacer } from "@nextui-org/react";
+import {
+  Text,
+  Input,
+  Button,
+  Loading,
+  Modal,
+  Spacer,
+  Container,
+} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import apiClient from "../../data/http-common";
 import { useMutation } from "react-query";
@@ -59,13 +67,19 @@ export const Login = () => {
   };
 
   return (
-    <div>
+    <Container
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Text
+        className="ingresarLogin"
         css={{
           position: "absolute",
-          top: "15%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
+          top: "5%",
           fontSize: "7rem",
           fontWeight: "bold",
         }}
@@ -148,6 +162,6 @@ export const Login = () => {
           <Spacer y={0.9} />
         </Modal>
       </ContainerMedium>
-    </div>
+    </Container>
   );
 };
