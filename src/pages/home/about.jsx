@@ -1,7 +1,10 @@
-import { Col, Container, Row, Spacer, Text } from "@nextui-org/react";
+import { Col, Container, Row, Spacer, Text, Button } from "@nextui-org/react";
 import Image from "../../assets/images/pegito@1-1366x629.jpg";
+import Mockups from "../../assets/images/mockup.png";
+import { useNavigate } from "react-router-dom";
 
 export const About = () => {
+  const navigate = useNavigate();
   return (
     <Container
       css={{
@@ -11,6 +14,22 @@ export const About = () => {
       }}
     >
       <Col>
+        <Button
+          color="secondary"
+          rounded
+          light
+          css={{
+            position: "absolute",
+            top: "5%",
+            left: "2%",
+            fontSize: "$2xl",
+          }}
+          size={"md"}
+          onPress={() => navigate("..")}
+        >
+          <i class="bi bi-arrow-left-circle-fill" Style="font-size: 30px;"></i>
+        </Button>
+        <Spacer y={5} />
         <Text
           h1
           size={55}
@@ -70,7 +89,7 @@ export const About = () => {
         Ventajas
       </Text>
       <Spacer y={4} />
-      <Row css={{ height: "35rem" }}>
+      <Row css={{}}>
         <Cards
           icon={"bi bi-lightning-charge-fill"}
           text={"Acelera la revisión de documentos en línea"}
@@ -87,6 +106,30 @@ export const About = () => {
           icon={"bi bi-person-fill-gear"}
           text={"Simplifica la distribución de evaluadores."}
         ></Cards>
+      </Row>
+      <Spacer y={3} />
+      <Row justify="space-between" align="center">
+        <Col css={{ width: "50%" }}>
+          <Text
+            h1
+            size={45}
+            css={{
+              margin: "0",
+              textGradient: "45deg, $blue600 -20%, $purple600 50%",
+              letterSpacing: "3px",
+            }}
+            weight="bold"
+          >
+            Únete a la Revolución de la Gestión de Proyectos de Investigación
+          </Text>
+        </Col>
+        <Col css={{ width: "50%" }}>
+          <img
+            src={Mockups}
+            alt="imagen"
+            style={{ width: "40rem", height: "auto" }}
+          />
+        </Col>
       </Row>
     </Container>
   );

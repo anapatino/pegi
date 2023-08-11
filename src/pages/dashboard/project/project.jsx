@@ -9,7 +9,6 @@ import {
   getProposalByDocument,
   getProposalByCode,
 } from "../../../controllers/proposal";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export function Project() {
@@ -25,7 +24,6 @@ export function Project() {
   } = useForm();
 
   const user = getUser();
-  const navigate = useNavigate();
   const proposalCode = watch("proposalCode");
   const [file, setFile] = useState(null);
 
@@ -74,7 +72,7 @@ export function Project() {
       <Spacer y={1.1} />
       <Row align="center">
         <Text css={{ fontSize: "1rem", marginRight: "1rem" }}>Propuesta :</Text>
-        {isSuccess && data != null ? (
+        {isSuccess && data.data != null ? (
           <SelectFull {...register("proposalCode", { required: true })}>
             {data.data.map((option) => {
               if (option.status === "Aprobado") {
@@ -83,6 +81,8 @@ export function Project() {
                     {option.title}
                   </option>
                 );
+              } else {
+                return null;
               }
             })}
           </SelectFull>
