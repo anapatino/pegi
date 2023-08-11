@@ -1,4 +1,3 @@
-import Spline from "@splinetool/react-spline";
 import { Button, Text, Loading, Container } from "@nextui-org/react";
 import { Navigation } from "../../components/Navbar";
 import { Login } from "../login/login";
@@ -8,6 +7,7 @@ import {
   ContainerContent,
 } from "../../styled-components/Containers";
 import { useState, useEffect } from "react";
+import SplineEmbed from "../../components/SplineEmbed";
 
 export function Home() {
   const [home, setHome] = useState(false);
@@ -15,9 +15,8 @@ export function Home() {
   const [splineLoaded, setSplineLoaded] = useState(false);
 
   useEffect(() => {
-    // Simulación de una operación de carga larga
     setTimeout(() => {
-      setLoading(false); // Marcar la carga de otros elementos como completa después de un tiempo (puedes reemplazar esto con tu lógica de carga real)
+      setLoading(false);
     }, 2000);
   }, []);
 
@@ -41,10 +40,7 @@ export function Home() {
         </Container>
       ) : (
         <>
-          <Spline
-            scene="https://prod.spline.design/Vk8MhpNxBYU3anGL/scene.splinecode"
-            onLoad={handleSplineLoad}
-          />
+          <SplineEmbed onLoad={handleSplineLoad} />
           {splineLoaded && home !== true ? (
             <ContainerPricipal>
               <Navigation />
