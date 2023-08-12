@@ -15,3 +15,8 @@ export const FormatDateView = (dat) => {
   const utcDate = date.toISOString().split("T")[0];
   return utcDate;
 };
+
+export const FormatDateInput = (dat) => {
+  const formattedDate = new Date(dat).toLocaleDateString("en-US");
+  return formattedDate;
+};

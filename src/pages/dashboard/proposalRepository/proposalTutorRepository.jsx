@@ -22,7 +22,6 @@ import {
 } from "../../../controllers/proposal";
 import { getProfessorByDocument } from "../../../controllers/professor";
 import Message from "../../../components/message";
-import { useNavigate } from "react-router-dom";
 import History from "../../../components/History";
 import Details from "../../../components/Details";
 
@@ -32,7 +31,6 @@ export function ProposalTutorRepository() {
 
 export function ProposalsTutorTableRepository() {
   const token = JSON.parse(localStorage.getItem("userConfiguration"));
-  const navigate = useNavigate();
 
   const requestOptions = {
     headers: { Authorization: `Bearer ${token}` },
@@ -234,20 +232,15 @@ export function ProposalsTutorTableRepository() {
         ""
       )}
       {professor.isError ? (
-        <>
-          <Message
-            type={"warning"}
-            title={
-              "¡Por favor, completa tu hoja de vida para consultar las propuestas!"
-            }
-            message={
-              "Si ya registraste tu hoja de vida, comunicate con el administrador para que te asigne el rol como docente"
-            }
-          />
-          {setTimeout(() => {
-            navigate("..");
-          }, 7000)}
-        </>
+        <Message
+          type={"warning"}
+          title={
+            "¡Por favor, completa tu hoja de vida para consultar las propuestas!"
+          }
+          message={
+            "Si ya registraste tu hoja de vida, comunicate con el administrador para que te asigne el rol como docente"
+          }
+        />
       ) : (
         ""
       )}

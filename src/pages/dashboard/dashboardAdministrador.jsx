@@ -9,7 +9,6 @@ import {
   Loading,
 } from "@nextui-org/react";
 import { useQuery, useMutation } from "react-query";
-import { getUser } from "../../data/user";
 import { useForm } from "react-hook-form";
 import { getAllMessages } from "../../controllers/message";
 import apiClient from "../../data/http-common";
@@ -23,7 +22,6 @@ export const DashboardAdministrador = () => {
   const requestOptions = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  const user = getUser();
   const { register, handleSubmit, reset } = useForm();
 
   const messages = useQuery(
@@ -56,7 +54,7 @@ export const DashboardAdministrador = () => {
     const newMessa = {
       ...newData,
       date: date,
-      name: user.userName,
+      name: "Administrador",
     };
     newMessage.mutate(newMessa);
     reset({ content: "" });
@@ -194,14 +192,17 @@ export const DashboardAdministrador = () => {
         >
           {messages.isSuccess && messages.data != null
             ? messages.data.data.map((message) => {
-                if (message.personDocument === user.personDocument) {
+                if (
+                  message.name === "Administrador" &&
+                  message.personDocument == null
+                ) {
                   return (
                     <Container
                       justify="flex-start"
                       key={message.code}
                       css={{
                         maxWidth: "16rem",
-                        background: "$success",
+                        background: "$primary",
                         borderRadius: "10px",
                         margin: "0.8rem 0",
                         marginLeft: "6.5rem",
@@ -228,7 +229,13 @@ export const DashboardAdministrador = () => {
                         paddingBottom: " 0.5rem",
                       }}
                     >
-                      <Text css={{ fontSize: "0.91rem", fontWeight: "$bold" }}>
+                      <Text
+                        css={{
+                          fontSize: "0.91rem",
+                          fontWeight: "$bold",
+                          letterSpacing: "1.2px",
+                        }}
+                      >
                         {message.name}
                       </Text>
                       <Text css={{ fontSize: "0.91rem" }}>

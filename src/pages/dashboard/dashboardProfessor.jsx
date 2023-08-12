@@ -57,7 +57,7 @@ export const DashboardProfessor = () => {
       ...newData,
       personDocument: user.personDocument,
       date: date,
-      name: user.FirstName,
+      name: user.FirstName + " " + user.FirstLastName,
     };
     newMessage.mutate(newMessa);
     reset({ content: "" });
@@ -195,7 +195,10 @@ export const DashboardProfessor = () => {
         >
           {messages.isSuccess && messages.data != null
             ? messages.data.data.map((message) => {
-                if (message.personDocument === user.personDocument) {
+                if (
+                  message.personDocument === user.personDocument &&
+                  user.personDocument != null
+                ) {
                   return (
                     <Container
                       justify="flex-start"
@@ -229,7 +232,17 @@ export const DashboardProfessor = () => {
                         paddingBottom: " 0.5rem",
                       }}
                     >
-                      <Text css={{ fontSize: "0.91rem", fontWeight: "$bold" }}>
+                      <Text
+                        css={{
+                          color:
+                            message.name === "Administrador"
+                              ? "$primary"
+                              : "#FFFFFF",
+                          fontSize: "0.91rem",
+                          fontWeight: "$bold",
+                          letterSpacing: "1.2px",
+                        }}
+                      >
                         {message.name}
                       </Text>
                       <Text css={{ fontSize: "0.91rem" }}>
@@ -259,15 +272,28 @@ export const DashboardProfessor = () => {
                   required: true,
                 })}
               ></Input>
-              <Button
-                type="submit"
-                color="secondary"
-                autoFocus="false"
-                size="xs"
-                css={{ height: "2.2rem", marginTop: "15px" }}
-              >
-                Guardar
-              </Button>
+              {user.personDocument != null ? (
+                <Button
+                  type="submit"
+                  color="secondary"
+                  autoFocus="false"
+                  size="xs"
+                  css={{ height: "2.2rem", marginTop: "15px" }}
+                >
+                  Guardar
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  color="secondary"
+                  autoFocus="false"
+                  disabled
+                  size="xs"
+                  css={{ height: "2.2rem", marginTop: "15px" }}
+                >
+                  Guardar
+                </Button>
+              )}
             </Row>
           </form>
         </Container>

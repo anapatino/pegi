@@ -72,7 +72,7 @@ export function Project() {
       <Spacer y={1.1} />
       <Row align="center">
         <Text css={{ fontSize: "1rem", marginRight: "1rem" }}>Propuesta :</Text>
-        {isSuccess && data.data != null ? (
+        {isSuccess && Array.isArray(data.data) ? (
           <SelectFull {...register("proposalCode", { required: true })}>
             {data.data.map((option) => {
               if (option.status === "Aprobado") {
