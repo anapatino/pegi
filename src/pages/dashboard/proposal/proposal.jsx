@@ -411,6 +411,7 @@ export function Proposal() {
                     autoFocus="false"
                     rounded
                     size="sm"
+                    css={{ marginRight: "6%" }}
                   >
                     Guardar
                   </Button>
@@ -423,12 +424,11 @@ export function Proposal() {
                     rounded
                     disabled
                     size="sm"
+                    css={{ marginRight: "6%" }}
                   >
                     Guardar
                   </Button>
                 )}
-
-                <Spacer x={2} />
               </Row>
               <Spacer y={2} />
             </Col>

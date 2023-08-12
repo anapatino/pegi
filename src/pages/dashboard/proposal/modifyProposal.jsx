@@ -126,7 +126,7 @@ export function ModifyProposal() {
         justify="space-between"
         align="center"
         gap={1}
-        css={{ width: "65rem" }}
+        css={{ width: "97%" }}
       >
         <h3>Modificar propuesta</h3>
         <Button bordered color="primary" auto rounded>
@@ -424,10 +424,10 @@ export function ModifyProposal() {
                   autoFocus="false"
                   rounded
                   size="sm"
+                  css={{ marginRight: "6%" }}
                 >
                   Modificar
                 </Button>
-                <Spacer x={2} />
               </Row>
               <Spacer y={2} />
             </Col>
