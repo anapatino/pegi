@@ -18,7 +18,7 @@ import { useQuery } from "react-query";
 import {
   getProjectByCode,
   getHistorialProject,
-  getAllProject,
+  getProjectByProfessorDocument,
 } from "../../../controllers/project";
 import { getProfessorByDocument } from "../../../controllers/professor";
 import Message from "../../../components/message";
@@ -47,8 +47,8 @@ export function ProjectTutorTableRepository() {
   );
 
   const { data, isSuccess, isLoading, isError } = useQuery(
-    ["getAllProject"],
-    () => getAllProject(requestOptions),
+    ["getAllProjectByProfessor"],
+    () => getProjectByProfessorDocument(user.personDocument, requestOptions),
     {
       refetchInterval: 19000,
     }
@@ -61,9 +61,9 @@ export function ProjectTutorTableRepository() {
   );
 
   const historial = useQuery(
-    ["historialProject", codeProject],
-    () => getHistorialProject(codeProject, requestOptions),
-    { enabled: !!codeProject, refetchOnWindowFocus: false, retry: false }
+    ["historialProject", codeProjectHistory],
+    () => getHistorialProject(codeProjectHistory, requestOptions),
+    { enabled: !!codeProjectHistory, refetchOnWindowFocus: false, retry: false }
   );
 
   const columns = [

@@ -12,7 +12,6 @@ import { useState } from "react";
 
 export default function HistoryDocument(prop) {
   const [visible, setVisible] = useState(true);
-  console.log(prop.data);
   const closeModal = () => {
     setVisible(false);
   };

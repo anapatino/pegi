@@ -31,7 +31,6 @@ import {
 import { getProfessorByDocument } from "../../../controllers/professor";
 import Message from "../../../components/message";
 import apiClient from "../../../data/http-common";
-import { useNavigate } from "react-router-dom";
 import DetailsDocument from "../../../components/DetailsDocument";
 import HistoryDocument from "../../../components/HistoryDocument";
 
@@ -47,13 +46,12 @@ export function ProjectTableRepository() {
     reset,
   } = useForm();
   const token = JSON.parse(localStorage.getItem("userConfiguration"));
-  const navigate = useNavigate();
   const requestOptions = {
     headers: { Authorization: `Bearer ${token}` },
   };
   let user = getUser();
   const { setVisible: setVisibleModal2, bindings: modal2Bindings } = useModal();
-  const [code, setCode] = useState("");
+  const [codeProjectFeedback, setCodeProjectFeedback] = useState("");
   const [codeProject, setCodeProject] = useState("");
   const [codeProjectHistory, setCodeProjectHistory] = useState("");
 
@@ -78,21 +76,24 @@ export function ProjectTableRepository() {
   );
 
   const historial = useQuery(
-    ["historialProject", codeProject],
-    () => getHistorialProject(codeProject, requestOptions),
-    { enabled: !!codeProject, refetchOnWindowFocus: false, retry: false }
+    ["historialProject", codeProjectHistory],
+    () => getHistorialProject(codeProjectHistory, requestOptions),
+    { enabled: !!codeProjectHistory, refetchOnWindowFocus: false, retry: false }
   );
 
   const feedback = useMutation((prop) => {
     return apiClient
-      .post("HistorialProyect/register-feedback", prop, requestOptions)
+      .post("HistorialProject/register-feedback", prop, requestOptions)
       .then((res) => res.data);
   });
 
   const onSubmit = (data) => {
+    const intNumber = parseInt(data.score);
+    delete data.score;
     const newProject = {
       ...data,
-      proyectCode: code,
+      projectCode: codeProjectFeedback,
+      score: intNumber,
     };
     feedback.mutate(newProject);
     reset({
@@ -188,23 +189,19 @@ export function ProjectTableRepository() {
               </Tooltip>
             </Col>
             <Spacer x={0.5} />
-            {professor.data.position !== "tutor" ? (
-              <Col>
-                <Tooltip content="Calificar">
-                  <IconButton
-                    id="qualify"
-                    onClick={() => {
-                      setVisibleModal2(true);
-                      setCode(user.code);
-                    }}
-                  >
-                    <EditIcon size={20} />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-            ) : (
-              ""
-            )}
+            <Col>
+              <Tooltip content="Calificar">
+                <IconButton
+                  id="qualify"
+                  onClick={() => {
+                    setVisibleModal2(true);
+                    setCodeProjectFeedback(user.code);
+                  }}
+                >
+                  <EditIcon size={20} />
+                </IconButton>
+              </Tooltip>
+            </Col>
           </Row>
         );
       default:
@@ -394,20 +391,15 @@ export function ProjectTableRepository() {
         ""
       )}
       {professor.isError ? (
-        <>
-          <Message
-            type={"warning"}
-            title={
-              "¡Por favor, completa tu hoja de vida para consultar los proyectos!"
-            }
-            message={
-              "Si ya registraste tu hoja de vida, comunicate con el administrador para que te asigne el cargo como docente"
-            }
-          />
-          {setTimeout(() => {
-            navigate("..");
-          }, 7000)}
-        </>
+        <Message
+          type={"warning"}
+          title={
+            "¡Por favor, completa tu hoja de vida para consultar los proyectos!"
+          }
+          message={
+            "Si ya registraste tu hoja de vida, comunicate con el administrador para que te asigne el cargo como docente"
+          }
+        />
       ) : (
         ""
       )}
