@@ -22,7 +22,6 @@ import {
 } from "../../../controllers/project";
 import { getProfessorByDocument } from "../../../controllers/professor";
 import Message from "../../../components/message";
-import { useNavigate } from "react-router-dom";
 import DetailsDocument from "../../../components/DetailsDocument";
 import HistoryDocument from "../../../components/HistoryDocument";
 
@@ -32,7 +31,6 @@ export function ProjectTutorRepository() {
 
 export function ProjectTutorTableRepository() {
   const token = JSON.parse(localStorage.getItem("userConfiguration"));
-  const navigate = useNavigate();
   const requestOptions = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -240,9 +238,6 @@ export function ProjectTutorTableRepository() {
               "Si ya registraste tu hoja de vida, comunicate con el administrador para que te asigne el cargo como docente"
             }
           />
-          {setTimeout(() => {
-            navigate("..");
-          }, 7000)}
         </>
       ) : (
         ""

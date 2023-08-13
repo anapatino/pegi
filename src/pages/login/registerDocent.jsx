@@ -15,6 +15,10 @@ import { useMutation } from "react-query";
 import Message from "../../components/message";
 
 export function RegisterDocent() {
+  const token = JSON.parse(localStorage.getItem("userConfiguration"));
+  const requestOptions = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   const {
     register,
     handleSubmit,
@@ -33,7 +37,9 @@ export function RegisterDocent() {
   };
 
   const user = useMutation((user) => {
-    return apiClient.post("Professor", user).then((res) => res.data);
+    return apiClient
+      .post("Professor", user, requestOptions)
+      .then((res) => res.data);
   });
 
   return (
