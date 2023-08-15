@@ -28,7 +28,6 @@ import Details from "../../../components/Details";
 import History from "../../../components/History";
 import { getPerson } from "../../../controllers/person";
 import { useNavigate } from "react-router-dom";
-import { getResearchGroupCode } from "../../../controllers/lines";
 export function ConsultProposal() {
   return <Outlet />;
 }
@@ -44,7 +43,6 @@ export function ProposalsTable() {
   const [codeProposalHistory, setCodeProposalHistory] = useState("");
   const [codeEvaluator, setCodeEvaluator] = useState("");
   const [codeTutor, setCodeTutor] = useState("");
-  const [codeResearch, setCodeResearch] = useState("");
   const navigate = useNavigate();
   const { data, isSuccess, isLoading, isError } = useQuery(
     ["search"],
@@ -58,12 +56,6 @@ export function ProposalsTable() {
     ["getEvaluator", codeEvaluator],
     () => getPerson(codeEvaluator, requestOptions),
     { enabled: !!codeEvaluator, refetchOnWindowFocus: false, retry: false }
-  );
-
-  const research = useQuery(
-    ["codeResearch", codeResearch],
-    () => getResearchGroupCode(codeResearch, requestOptions),
-    { enabled: !!codeResearch, refetchOnWindowFocus: false, retry: false }
   );
 
   const tutor = useQuery(
@@ -207,7 +199,6 @@ export function ProposalsTable() {
     if (view.isSuccess) {
       setCodeEvaluator(view.data.data.evaluatorDocument);
       setCodeTutor(view.data.data.tutorDocument);
-      setCodeResearch(view.data.data.investigationGroup);
     }
   }, [view.isSuccess]);
 
@@ -280,11 +271,6 @@ export function ProposalsTable() {
               ? tutor.data?.data.firstName +
                 " " +
                 tutor.data?.data.firstLastName
-              : ""
-          }
-          researchGroup={
-            research.isSuccess && research.data != null
-              ? research.data?.data.name
               : ""
           }
         />

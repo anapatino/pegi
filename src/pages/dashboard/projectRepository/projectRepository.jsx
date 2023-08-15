@@ -312,11 +312,6 @@ export function ProjectTableRepository() {
                 <Input
                   {...register("score", {
                     required: true,
-                    pattern: /^(?:[0-5](?:\.[0-9]+)?)$/,
-                    maxLength: {
-                      value: 3,
-                      message: "Max 1 decimal",
-                    },
                   })}
                   clearable
                   bordered

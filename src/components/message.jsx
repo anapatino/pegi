@@ -29,17 +29,17 @@ export default function Message(prop) {
               <Error fill="#FF0080" />
             )}
             <Spacer y={1} />
-            <Text b size={18}>
+            <Text b css={{ letterSpacing: "1px" }} size={18}>
               {prop.title}
             </Text>
             {!prop.message ? (
               ""
             ) : (
               <>
-                <Text id="modal-title" size={17}>
+                <Text id="modal-title" css={{ letterSpacing: "1px" }} size={17}>
                   Mensaje especifico:
                 </Text>
-                <Text id="modal-title" size={17}>
+                <Text id="modal-title" css={{ letterSpacing: "1px" }} size={17}>
                   {prop.message}
                 </Text>
               </>

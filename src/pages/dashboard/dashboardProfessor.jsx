@@ -205,6 +205,7 @@ export const DashboardProfessor = () => {
                       key={message.code}
                       css={{
                         maxWidth: "16rem",
+                        width: "auto",
                         background: "$secondary",
                         borderRadius: "10px",
                         margin: "0.8rem 0",
@@ -224,7 +225,8 @@ export const DashboardProfessor = () => {
                     <Container
                       key={message.code}
                       css={{
-                        width: "16rem",
+                        maxWidth: "16rem",
+                        width: "auto",
                         borderRadius: "10px",
                         background: "#16181A",
                         margin: "0.8rem 0",

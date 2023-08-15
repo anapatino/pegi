@@ -27,22 +27,22 @@ export default function DetailsDocument(prop) {
             <Row>
               {prop.tutor != null ? (
                 <Row align="center">
-                  <Text weight="bold" size={18}>
+                  <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                     Tutor:
                   </Text>
                   <Spacer x={0.5} />
-                  <Text> {prop.tutor}</Text>
+                  <Text css={{ letterSpacing: "1px" }}> {prop.tutor}</Text>
                 </Row>
               ) : (
                 ""
               )}
               {prop.evaluator != null ? (
                 <Row align="center">
-                  <Text weight="bold" size={18}>
+                  <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                     Evaluador:
                   </Text>
                   <Spacer x={0.5} />
-                  <Text> {prop.evaluator}</Text>
+                  <Text css={{ letterSpacing: "1px" }}> {prop.evaluator}</Text>
                 </Row>
               ) : (
                 ""
@@ -50,29 +50,29 @@ export default function DetailsDocument(prop) {
             </Row>
             <Spacer y={1} />
             <Row align="center">
-              <Text weight="bold" size={18}>
+              <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                 Codigo Propuesta:
               </Text>
               <Spacer x={0.5} />
-              <Text weight="light" size={18}>
+              <Text weight="light" css={{ letterSpacing: "1px" }} size={18}>
                 {prop.data.proposalCode}
               </Text>
             </Row>
             <Spacer y={1} />
             <Row>
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Titulo:
                 </Text>
                 <Spacer x={0.5} />
-                <Text weight="light" size={18}>
+                <Text weight="light" css={{ letterSpacing: "1px" }} size={18}>
                   {prop.data.title}
                 </Text>
               </Row>
             </Row>
             <Spacer y={1} />
             <Row align="center">
-              <Text weight="bold" size={18}>
+              <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                 Estado:
               </Text>
               <Spacer x={0.5} />
@@ -82,21 +82,24 @@ export default function DetailsDocument(prop) {
             </Row>
             <Spacer y={1} />
             <Row align="center">
-              <Text weight="bold" size={18}>
+              <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                 Calificacion:
               </Text>
               <Spacer x={0.5} />
               <Text> {prop.data.score}</Text>
             </Row>
             <Spacer y={0.5} />
-            <Text weight="bold" size={18}>
+            <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
               Descargar documento
             </Text>
             <a
               href={`data:application/pdf;base64,${prop.data.content}`}
               download
             >
-              <Button size={"md"} css={{ marginTop: "1rem" }}>
+              <Button
+                size={"md"}
+                css={{ marginTop: "1rem", letterSpacing: "1px" }}
+              >
                 Descargar
               </Button>
             </a>

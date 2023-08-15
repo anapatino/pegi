@@ -137,9 +137,15 @@ export function Project() {
         ""
       )}
       {p.isSuccess ? (
-        <Message type={"success"} title={"¡Proyecto enviado correctamente!"} />
+        <Message type={"success"} title={"Proyecto enviado correctamente"} />
       ) : p.isError ? (
-        <Message type={"error"} title={"¡Error al guardar el proyecto!"} />
+        <Message
+          type={"error"}
+          title={"Error al guardar el proyecto"}
+          message={
+            p.error.response.data != null ? p.error.response.data.message : ""
+          }
+        />
       ) : (
         ""
       )}

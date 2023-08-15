@@ -20,30 +20,30 @@ export default function History(prop) {
     <Container>
       <Modal scroll width="45rem" open={visible} onClose={closeModal}>
         <Modal.Header>
-          <Text b id="modal-title" size={26}>
+          <Text b id="modal-title" css={{ letterSpacing: "1px" }} size={26}>
             Historial de Propuesta
           </Text>
         </Modal.Header>
         <Modal.Body>
           <Row align="center">
-            <Text weight="bold" size={18}>
+            <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
               Codigo Propuesta:
             </Text>
             <Spacer x={0.5} />
-            <Text> {prop.codeProposal}</Text>
+            <Text css={{ letterSpacing: "1px" }}> {prop.codeProposal}</Text>
           </Row>
           {prop.data.map((option) => (
             <Col>
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Codigo Historial:
                 </Text>
                 <Spacer x={0.5} />
-                <Text> {option.code}</Text>
+                <Text css={{ letterSpacing: "1px" }}> {option.code}</Text>
               </Row>
               <Spacer y={1} />
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Estado:
                 </Text>
                 <Spacer x={0.5} />
@@ -52,11 +52,14 @@ export default function History(prop) {
                 </StyledBadge>
               </Row>
               <Spacer y={1} />
-              <Text weight="bold" size={18}>
+              <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                 Retroalimentacion:
               </Text>
               <Spacer y={0.5} />
-              <Text> {option.proposalFeedBack.comment}</Text>
+              <Text css={{ letterSpacing: "1px" }}>
+                {" "}
+                {option.proposalFeedBack.comment}
+              </Text>
               <Spacer y={1.5} />
             </Col>
           ))}

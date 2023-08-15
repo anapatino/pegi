@@ -19,30 +19,30 @@ export default function HistoryDocument(prop) {
     <Container>
       <Modal scroll width="45rem" open={visible} onClose={closeModal}>
         <Modal.Header>
-          <Text b id="modal-title" size={28}>
+          <Text b id="modal-title" css={{ letterSpacing: "1px" }} size={28}>
             Historial de Proyecto
           </Text>
         </Modal.Header>
         <Modal.Body>
           <Row align="center">
-            <Text weight="bold" size={18}>
+            <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
               Codigo Proyecto:
             </Text>
             <Spacer x={0.5} />
-            <Text> {prop.codeProject}</Text>
+            <Text css={{ letterSpacing: "1px" }}> {prop.codeProject}</Text>
           </Row>
           {prop.data.map((option) => (
             <Col>
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Codigo Historial:
                 </Text>
                 <Spacer x={0.5} />
-                <Text> {option.code}</Text>
+                <Text css={{ letterSpacing: "1px" }}> {option.code}</Text>
               </Row>
               <Spacer y={1} />
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Estado:
                 </Text>
                 <Spacer x={0.5} />
@@ -52,18 +52,24 @@ export default function HistoryDocument(prop) {
               </Row>
               <Spacer y={1} />
               <Row align="center">
-                <Text weight="bold" size={18}>
+                <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                   Califacion:
                 </Text>
                 <Spacer x={0.5} />
-                <Text> {option.projectFeedBack.score}</Text>
+                <Text css={{ letterSpacing: "1px" }}>
+                  {" "}
+                  {option.projectFeedBack.score}
+                </Text>
               </Row>
               <Spacer y={1} />
-              <Text weight="bold" size={18}>
+              <Text weight="bold" css={{ letterSpacing: "1px" }} size={18}>
                 Retroalimentacion:
               </Text>
               <Spacer y={0.5} />
-              <Text> {option.projectFeedBack.comment}</Text>
+              <Text css={{ letterSpacing: "1px" }}>
+                {" "}
+                {option.projectFeedBack.comment}
+              </Text>
               <Spacer y={1.5} />
             </Col>
           ))}
