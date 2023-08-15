@@ -16,13 +16,15 @@ import { Select } from "../../../styled-components/Select";
 import { useMutation, useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getUser } from "../../../data/user";
-import { getPerson, deletePerson } from "../../../controllers/person";
+import { getPersonByUser, deletePerson } from "../../../controllers/person";
 import { getAllDepartments, getCities } from "../../../controllers/location";
 import Message from "../../../components/message";
 import { FormatDateInitial, FormatDateInput } from "../../../data/formatData";
 
 export function RegisterCv() {
   const token = JSON.parse(localStorage.getItem("userConfiguration"));
+  const personDocument = JSON.parse(localStorage.getItem("personDocument"));
+
   const {
     register,
     handleSubmit,
@@ -35,25 +37,6 @@ export function RegisterCv() {
   const [isOpen, setIsOpen] = useState(false);
   let user = getUser();
   const [document, setDocument] = useState(null);
-
-  const handleDeleteClick = () => {
-    setDocument(user.personDocument);
-    reset({
-      identificationType: "",
-      document: "",
-      firstName: "",
-      secondName: "",
-      firstLastName: "",
-      secondLastName: "",
-      civilState: "",
-      gender: "",
-      birthDate: "",
-      phone: "",
-      institutionalMail: "",
-      departments: "",
-      citiesCode: "",
-    });
-  };
 
   const del = useQuery(["delete", document], () => deletePerson(document), {
     enabled: !!document,
@@ -75,7 +58,6 @@ export function RegisterCv() {
       nameUser: user.nameUser,
       birthDate: utcDate,
     };
-    console.log(people);
     query.mutate(people);
 
     reset({
@@ -97,8 +79,8 @@ export function RegisterCv() {
 
   const { data, isLoading } = useQuery(
     ["search", user],
-    () => getPerson(user.personDocument, requestOptions),
-    { enabled: !!user, refetchOnWindowFocus: false, retry: false }
+    () => getPersonByUser(user.nameUser, requestOptions),
+    { enabled: !!user, refetchOnWindowFocus: false }
   );
 
   const query = useMutation((people) => {
@@ -124,8 +106,9 @@ export function RegisterCv() {
   useEffect(() => {
     if (!isLoading && data != null) {
       const newBirthDate = FormatDateInput(data.data.birthDate);
-      data.data.birthDate = newBirthDate;
-      reset(data.data);
+      delete data.data.birthDate;
+      const newData = { ...data.data, birthDate: newBirthDate };
+      reset(newData);
     }
   }, [isLoading, reset, data]);
 
@@ -171,7 +154,15 @@ export function RegisterCv() {
                 size="sm"
                 shadow
                 color="error"
-                onPress={handleDeleteClick}
+                onPress={() =>
+                  setDocument(
+                    personDocument != null
+                      ? personDocument
+                      : user.personDocument != null
+                      ? user.personDocument
+                      : ""
+                  )
+                }
               >
                 Eliminar
               </Button>
@@ -489,10 +480,10 @@ export function RegisterCv() {
                     autoFocus="false"
                     size="sm"
                     rounded
+                    css={{ marginRight: "16%" }}
                   >
                     Guardar
                   </Button>
-                  <Spacer x={5} />
                 </Row>
               ) : (
                 ""
@@ -503,23 +494,47 @@ export function RegisterCv() {
         </form>
       </Container>
       {query.isSuccess ? (
-        <Message
-          type={"success"}
-          title={"¡Formulario enviado correctamente!"}
-        />
+        <Message type={"success"} title={"Formulario enviado correctamente"} />
       ) : query.isError ? (
-        <Message type={"error"} title={"¡Error al guardar el formulario!"} />
+        <Message type={"error"} title={"Error al guardar el formulario"} />
       ) : (
         ""
       )}
       {del.isSuccess ? (
-        <Message
-          type={"success"}
-          title={"Formulario eliminado correctamente"}
-          message={del.data.message}
-        />
+        <>
+          <Message
+            type={"success"}
+            title={"Formulario eliminado correctamente"}
+            message={del.data.message}
+          />
+          {reset({
+            identificationType: "",
+            document: "",
+            firstName: "",
+            secondName: "",
+            firstLastName: "",
+            secondLastName: "",
+            civilState: "",
+            gender: "",
+            birthDate: "",
+            phone: "",
+            institutionalMail: "",
+            departments: "",
+            citiesCode: "",
+            departamentName: "",
+            citiesName: "",
+          })}
+        </>
       ) : del.isError ? (
-        <Message type={"error"} title={"¡Error al eliminar el formulario!"} />
+        <Message
+          type={"error"}
+          title={"Error al eliminar el formulario"}
+          message={
+            del.error.response.data != null
+              ? del.error.response.data.message
+              : ""
+          }
+        />
       ) : (
         ""
       )}

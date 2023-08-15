@@ -17,3 +17,9 @@ export const getPerson = (personDocument, requestOptions) => {
     .get(`people/${personDocument}`, requestOptions)
     .then((res) => res.data);
 };
+
+export const getPersonByUser = (name, requestOptions) => {
+  return apiClient
+    .get(`people/get-person-by-user/${name}`, requestOptions)
+    .then((res) => res.data);
+};
