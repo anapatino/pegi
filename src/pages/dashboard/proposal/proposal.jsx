@@ -13,7 +13,7 @@ import apiClient from "../../../data/http-common";
 import { useQuery, useMutation } from "react-query";
 import { Select, SelectMedium } from "../../../styled-components/Select";
 import { getUser } from "../../../data/user";
-import { getPerson } from "../../../controllers/person";
+import { getPersonByUser } from "../../../controllers/person";
 import {
   getAllLines,
   getSubline,
@@ -79,7 +79,7 @@ export function Proposal() {
 
   const person = useQuery(
     ["searchCv", user],
-    () => getPerson(user.personDocument, requestOptions),
+    () => getPersonByUser(user.nameUser, requestOptions),
     { enabled: !!user, refetchOnWindowFocus: false, retry: false }
   );
 
