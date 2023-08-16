@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
 import { Select } from "../../../styled-components/Select";
 import { useMutation, useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef  } from "react";
 import { getUser } from "../../../data/user";
 import { getPersonByUser, deletePerson } from "../../../controllers/person";
 import { getAllDepartments, getCities } from "../../../controllers/location";
@@ -35,7 +35,7 @@ export function RegisterCv() {
   } = useForm();
   const city = watch("departments");
   const [isOpen, setIsOpen] = useState(false);
-  let user = getUser();
+  const userRef = useRef(getUser());
   const [document, setDocument] = useState(null);
 
   const del = useQuery(["delete", document], () => deletePerson(document), {
@@ -55,7 +55,7 @@ export function RegisterCv() {
     const { departments, ...newData } = data;
     const people = {
       ...newData,
-      nameUser: user.nameUser,
+      nameUser: userRef.current.nameUser,
       birthDate: utcDate,
     };
     query.mutate(people);
@@ -78,19 +78,21 @@ export function RegisterCv() {
   };
 
   const { data, isLoading } = useQuery(
-    ["search", user],
-    () => getPersonByUser(user.nameUser, requestOptions),
-    { enabled: !!user, refetchOnWindowFocus: false }
+    ["search", userRef.current],
+    () => getPersonByUser(userRef.current.nameUser, requestOptions),
+    { enabled: !!userRef.current, refetchOnWindowFocus: false, retry: false }
   );
 
   const query = useMutation((people) => {
+    console.log('query');
     return apiClient.post("people", people, requestOptions).then((res) => {
       if (res.status === 200) {
         localStorage.setItem("personDocument", JSON.stringify(people.document));
-        user = getUser();
+        userRef.current = getUser();
       }
     });
   });
+
   const departments = useQuery(
     "departaments",
     () => getAllDepartments(requestOptions),
@@ -104,13 +106,43 @@ export function RegisterCv() {
   );
 
   useEffect(() => {
+
     if (!isLoading && data != null) {
       const newBirthDate = FormatDateInput(data.data.birthDate);
       delete data.data.birthDate;
       const newData = { ...data.data, birthDate: newBirthDate };
       reset(newData);
+      console.log('effect')
+
     }
-  }, [isLoading, reset, data]);
+    return () => {
+      // Cleanup if needed
+    };
+  }, [isLoading, reset, data,document]);
+
+  useEffect(() => {
+    return () => {
+      setIsOpen(false);
+      setDocument(null);
+      userRef.current=null;
+      reset({
+        identificationType: "",
+        document: "",
+        firstName: "",
+        secondName: "",
+        firstLastName: "",
+        secondLastName: "",
+        civilState: "",
+        gender: "",
+        birthDate: "",
+        phone: "",
+        institutionalMail: "",
+        departments: "",
+        citiesCode: "",
+      });
+    };
+  }, [document]);
+  
 
   return (
     <Container
@@ -156,12 +188,13 @@ export function RegisterCv() {
                 color="error"
                 onPress={() =>
                   setDocument(
-                    personDocument != null
+                    personDocument !== null
                       ? personDocument
-                      : user.personDocument != null
-                      ? user.personDocument
+                      : userRef.current.personDocument !== null
+                      ? userRef.current.personDocument
                       : ""
                   )
+                  
                 }
               >
                 Eliminar
