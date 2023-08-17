@@ -314,7 +314,6 @@ export function ProposalsTableRepository() {
               <Textarea
                 {...register("comment", {
                   required: true,
-                  pattern: /^[A-Za-záéíóúÁÉÍÓÚñÑ\s,.-]+$/,
                   maxLength: {
                     value: 500,
                     message: "Max 500 caracteres",
@@ -330,11 +329,6 @@ export function ProposalsTableRepository() {
               <Text css={{ fontSize: "0.85rem" }}>
                 {errors.comment?.message}
               </Text>
-              {errors.comment && errors.comment.type === "pattern" && (
-                <Text css={{ fontSize: "0.85rem" }}>
-                  Solo se permiten letras y espacios
-                </Text>
-              )}
               <Spacer y={2} />
               <Row justify="flex-end" align="center">
                 <Button

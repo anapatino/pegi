@@ -197,7 +197,7 @@ export function ProjectTutorTableRepository() {
         ) : isError ? (
           <Message
             type={"error"}
-            title={"¡Ha ocurrido un error a la hora de cargar los proyectos!"}
+            title={"Ha ocurrido un error a la hora de cargar los proyectos"}
           />
         ) : (
           ""
@@ -208,7 +208,7 @@ export function ProjectTutorTableRepository() {
       ) : view.isError ? (
         <Message
           type={"error"}
-          title={"¡Ha ocurrido un error al mostrar los detalles del proyecto!"}
+          title={"Ha ocurrido un error al mostrar los detalles del proyecto"}
         />
       ) : (
         ""

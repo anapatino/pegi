@@ -199,7 +199,7 @@ export function ProposalsTutorTableRepository() {
         ) : isError ? (
           <Message
             type={"error"}
-            title={"¡Ha ocurrido un error a la hora de cargar las propuestas!"}
+            title={"Ha ocurrido un error a la hora de cargar las propuestas"}
           />
         ) : (
           ""
@@ -210,9 +210,7 @@ export function ProposalsTutorTableRepository() {
       ) : view.isError ? (
         <Message
           type={"error"}
-          title={
-            "¡Ha ocurrido un error al mostrar los detalles de la propuesta!"
-          }
+          title={"Ha ocurrido un error al mostrar los detalles de la propuesta"}
         />
       ) : (
         ""

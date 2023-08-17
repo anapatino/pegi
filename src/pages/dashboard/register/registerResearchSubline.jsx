@@ -142,12 +142,12 @@ export default function RegisterResearchSubline() {
       {sublines.isSuccess ? (
         <Message
           type={"success"}
-          title={"¡SubLinea de Investigacion Registrada correctamente!"}
+          title={"SubLinea de investigacion registrada correctamente"}
         />
       ) : sublines.isError ? (
         <Message
           type={"error"}
-          title={"Error al Registrar SubLinea de Investigacion."}
+          title={"Error al registrar subLinea de investigacion"}
         />
       ) : (
         ""

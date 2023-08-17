@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import apiClient from "../../../data/http-common";
 import { Select } from "../../../styled-components/Select";
 import { useMutation, useQuery } from "react-query";
-import { useEffect, useState,useRef  } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getUser } from "../../../data/user";
 import { getPersonByUser, deletePerson } from "../../../controllers/person";
 import { getAllDepartments, getCities } from "../../../controllers/location";
@@ -84,7 +84,7 @@ export function RegisterCv() {
   );
 
   const query = useMutation((people) => {
-    console.log('query');
+    console.log("query");
     return apiClient.post("people", people, requestOptions).then((res) => {
       if (res.status === 200) {
         localStorage.setItem("personDocument", JSON.stringify(people.document));
@@ -106,25 +106,23 @@ export function RegisterCv() {
   );
 
   useEffect(() => {
-
     if (!isLoading && data != null) {
       const newBirthDate = FormatDateInput(data.data.birthDate);
       delete data.data.birthDate;
       const newData = { ...data.data, birthDate: newBirthDate };
       reset(newData);
-      console.log('effect')
-
+      console.log("effect");
     }
     return () => {
       // Cleanup if needed
     };
-  }, [isLoading, reset, data,document]);
+  }, [isLoading, reset, data, document]);
 
   useEffect(() => {
     return () => {
       setIsOpen(false);
       setDocument(null);
-      userRef.current=null;
+      userRef.current = null;
       reset({
         identificationType: "",
         document: "",
@@ -142,7 +140,6 @@ export function RegisterCv() {
       });
     };
   }, [document]);
-  
 
   return (
     <Container
@@ -194,7 +191,6 @@ export function RegisterCv() {
                       ? userRef.current.personDocument
                       : ""
                   )
-                  
                 }
               >
                 Eliminar
@@ -238,8 +234,8 @@ export function RegisterCv() {
                       required: true,
                       pattern: /^[0-9]+$/,
                       minLength: {
-                        value: 4,
-                        message: "Min 4 numeros",
+                        value: 5,
+                        message: "Min 5 numeros",
                       },
                       maxLength: {
                         value: 10,

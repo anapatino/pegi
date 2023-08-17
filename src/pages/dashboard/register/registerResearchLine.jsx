@@ -121,12 +121,12 @@ export function RegisterResearchLines() {
       {lines.isSuccess ? (
         <Message
           type={"success"}
-          title={"¡Linea de Investigacion Registrada correctamente!"}
+          title={"Linea de investigacion registrada correctamente"}
         />
       ) : lines.isError ? (
         <Message
           type={"error"}
-          title={"Error al Registrar Linea de Investigacion."}
+          title={"Error al registrar linea de investigacion"}
         />
       ) : (
         ""

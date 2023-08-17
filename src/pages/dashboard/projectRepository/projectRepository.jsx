@@ -373,15 +373,9 @@ export function ProjectTableRepository() {
         </Modal.Body>
       </Modal>
       {feedback.isSuccess ? (
-        <Message
-          type={"success"}
-          title={"¡Proyecto " + codeProject + " calificado correctamente!"}
-        />
+        <Message type={"success"} title={"Proyecto calificado correctamente"} />
       ) : feedback.isError ? (
-        <Message
-          type={"error"}
-          title={"¡Error al calificar la Proyecto " + codeProject + " !"}
-        />
+        <Message type={"error"} title={"Error al calificar la Proyecto "} />
       ) : (
         ""
       )}

@@ -164,10 +164,10 @@ export default function RegisterAreaThematic() {
       {area.isSuccess ? (
         <Message
           type={"success"}
-          title={"¡Area Tematica Registrada correctamente!"}
+          title={"Area tematica registrada correctamente"}
         />
       ) : area.isError ? (
-        <Message type={"error"} title={"Error al Registrar Area Tematica."} />
+        <Message type={"error"} title={"Error al registrar area tematica"} />
       ) : (
         ""
       )}

@@ -191,7 +191,7 @@ export function ProposedTable() {
         ) : isError ? (
           <Message
             type={"error"}
-            title={"¡Ha ocurrido un error a la hora de cargar las propuestas!"}
+            title={"Ha ocurrido un error a la hora de cargar las propuestas"}
           />
         ) : (
           ""

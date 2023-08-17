@@ -29,7 +29,6 @@ export function Project() {
 
   const saveProject = () => {
     const formData = new FormData();
-
     formData.append("content", file);
     formData.append("personDocument1", user.personDocument);
     formData.append(
@@ -130,7 +129,7 @@ export function Project() {
         <Message
           type={"warning"}
           title={
-            "No puedes registrar un proyecto sin previamente tener una propuesta."
+            "¡No puedes registrar un proyecto sin previamente tener una propuesta!"
           }
         />
       ) : (

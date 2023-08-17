@@ -191,7 +191,7 @@ export function ProjectTable() {
         ) : isError ? (
           <Message
             type={"error"}
-            title={"¡Ha ocurrido un error a la hora de cargar los proyectos!"}
+            title={"Ha ocurrido un error a la hora de cargar los proyectos"}
           />
         ) : (
           ""

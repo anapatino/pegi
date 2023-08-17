@@ -437,12 +437,12 @@ export function ModifyProposal() {
       {update.isSuccess ? (
         <Message
           type={"success"}
-          title={"¡Se ha modificado el formulario de propuesta correctamente!"}
+          title={"Se ha modificado el formulario de propuesta correctamente"}
         />
       ) : update.isError ? (
         <Message
           type={"error"}
-          title={"¡Error al modificar el formulario propuesta!"}
+          title={"Error al modificar el formulario propuesta"}
         />
       ) : (
         ""

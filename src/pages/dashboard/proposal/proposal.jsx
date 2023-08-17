@@ -455,12 +455,12 @@ export function Proposal() {
       {proposal.isSuccess ? (
         <Message
           type={"success"}
-          title={"¡Formulario Propuesta enviado correctamente!"}
+          title={"Formulario Propuesta enviado correctamente"}
         />
       ) : proposal.isError ? (
         <Message
           type={"error"}
-          title={"¡Error al guardar el formulario Propuesta!"}
+          title={"Error al guardar el formulario Propuesta"}
         />
       ) : (
         ""
