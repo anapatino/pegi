@@ -105,6 +105,14 @@ export const ContainerContent = styled.div`
       width: 28rem;
     }
   }
+
+  @media (max-width: 800px) {
+    margin: 10% 5%;
+  }
+
+  @media (max-width: 1200px) {
+    margin: 2.5% 5%;
+  }
 `;
 
 export const ContainerDash = styled.div`

@@ -4,23 +4,23 @@ export function Navigation() {
   return (
     <Nav>
       <div className="nLogo">
-        <Title>Pegi</Title>
+        <Title className="pegi">Pegi</Title>
       </div>
       <ListItems>
         <li>
-          <Link to="about/" style={{ color: "#FFF" }}>
+          <Link to="about/" className="about" style={{ color: "#FFF" }}>
             Acerca de
           </Link>
         </li>
         <li>|</li>
         <li>
-          <Link to="contact/" style={{ color: "#FFF" }}>
+          <Link to="contact/" className="contact" style={{ color: "#FFF" }}>
             Contacto
           </Link>
         </li>
         <li>|</li>
         <li>
-          <Link to="/" style={{ color: "#FFF" }}>
+          <Link to="/" className="app" style={{ color: "#FFF" }}>
             Descargar app
           </Link>
         </li>

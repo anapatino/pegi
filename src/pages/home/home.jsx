@@ -20,8 +20,12 @@ export function Home() {
           <ContainerPricipal>
             <Navigation />
             <ContainerContent>
-              <Text css={{ fontSize: "1.2rem" }}>Una aplicacion capaz de</Text>
-              <h1 className="title">GESTIONAR PROYECTOS</h1>
+              <Text css={{ fontSize: "1.2rem" }} className="text">
+                Una aplicacion capaz de
+              </Text>
+              <Text h1 className="title" css={{ fontSize: "3rem" }}>
+                GESTIONAR PROYECTOS
+              </Text>
               <Text
                 className="textPrincipal"
                 css={{ fontSize: "1.2rem", width: "45rem" }}
@@ -35,6 +39,7 @@ export function Home() {
                   background: "$gradient",
                   width: "5rem",
                   marginTop: "1rem",
+                  letterSpacing: "2px",
                 }}
                 onPress={() => setHome(true)}
               >
