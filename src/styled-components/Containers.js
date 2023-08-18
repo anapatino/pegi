@@ -85,33 +85,104 @@ export const ContainerContent = styled.div`
   flex-direction: column;
   text-align: right;
   align-items: flex-end;
-  h1 {
-    @media (max-width: 800px) {
-      fontsize: 0.5rem;
+  .text {
+    @media (max-width: 1920px) {
+      font-size: 2rem;
+    }
+    @media (max-width: 1366px) {
+      font-size: 1.2rem;
+    }
+    @media (max-width: 1270px) {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 1200px) {
+      margin: 0;
+
+      font-size: 0.8rem;
+    }
+    @media (max-width: 900px) {
+      margin: 0;
+      font-size: 0.9rem;
     }
   }
-  .textPrincipal {
+
+  .title {
+    @media (max-width: 1920px) {
+      font-size: 5.2rem;
+    }
+
+    @media (max-width: 1366px) {
+      font-size: 3rem;
+    }
+
     @media (max-width: 1270px) {
-      fontsize: 1rem;
-      width: 35rem;
+      margin: 0;
+      font-size: 2.7rem;
     }
 
     @media (max-width: 1200px) {
-      fontsize: 0.8rem;
-      width: 35rem;
+      margin: 0;
+      font-size: 2.5rem;
     }
 
     @media (max-width: 900px) {
+      margin: 0;
+
+      font-size: 2rem;
+    }
+  }
+
+  .textPrincipal {
+    @media (max-width: 1920px) {
+      font-size: 2rem;
+      margin: 0;
+      width: 60rem;
+    }
+
+    @media (max-width: 1366px) {
+      font-size: 1.2rem;
+      width: 45rem;
+    }
+
+    @media (max-width: 1270px) {
+      font-size: 1.1rem;
+      margin: 0;
+      width: 45rem;
+    }
+    @media (max-width: 1200px) {
+      font-size: 0.8rem;
+      margin: 0;
+      width: 40rem;
+    }
+
+    @media (max-width: 900px) {
+      margin: 0;
       width: 28rem;
     }
   }
 
-  @media (max-width: 800px) {
-    margin: 10% 5%;
+  #login {
+    @media (max-width: 1920px) {
+      height: 5rem;
+      font-size: 1.6rem;
+      width: 18rem;
+    }
+    @media (max-width: 1366px) {
+      width: 5rem;
+      font-size: 1rem;
+      height: auto;
+    }
   }
 
+  @media (max-width: 1920px) {
+    margin: 8% 5%;
+  }
+  @media (max-width: 1270px) {
+    margin: 5% 5%;
+  }
   @media (max-width: 1200px) {
-    margin: 2.5% 5%;
+    margin: 6% 5%;
   }
 `;
 

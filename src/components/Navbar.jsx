@@ -20,9 +20,13 @@ export function Navigation() {
         </li>
         <li>|</li>
         <li>
-          <Link to="/" className="app" style={{ color: "#FFF" }}>
-            Descargar app
-          </Link>
+          <a
+            href="../assets/apk/base.apk"
+            download="pegi.apk"
+            style={{ color: "#FFF" }}
+          >
+            Descargar App
+          </a>
         </li>
       </ListItems>
     </Nav>
